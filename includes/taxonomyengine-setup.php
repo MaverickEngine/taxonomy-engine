@@ -1,0 +1,21 @@
+<?php
+class TaxonomyEngineSetup {
+    function __construct() {
+        // add_action( "init", array( $this, "taxonomy_setup" ), 10 );
+    }
+
+    function taxonomy_setup() {
+        register_taxonomy( "taxonomyengine", ["post"], [
+            "hierarchical" => true,
+            "label" => "TaxonomyEngine",
+            "show_ui" => true,
+            "show_admin_column" => true,
+            'show_in_rest' => true,
+            "query_var" => true,
+            "rewrite" => array( "slug" => "taxonomyengine" ),
+            "public" => true,
+            "show_in_menu" => true,
+            "show_admin_column" => true,
+        ]);
+    }
+}

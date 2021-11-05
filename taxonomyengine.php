@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function taxonomy_engine_init() {
     $taxonomyengine_globals = [];
+    require_once( plugin_dir_path( __FILE__ ) . 'includes/taxonomyengine-setup.php' );
+    $taxonomyengine_setup = new TaxonomyEngineSetup( $taxonomyengine_globals );
     require_once(plugin_basename('includes/taxonomyengine-admin.php' ) );
     $taxonomyengine_admin = new TaxonomyEngineAdmin($taxonomyengine_globals);
 }
