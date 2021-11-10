@@ -1,7 +1,7 @@
 <?php
 class TaxonomyEngineSetup {
     function __construct() {
-        // add_action( "init", array( $this, "taxonomy_setup" ), 10 );
+        add_action( "init", array( $this, "taxonomy_setup" ), 10 );
     }
 
     function taxonomy_setup() {
