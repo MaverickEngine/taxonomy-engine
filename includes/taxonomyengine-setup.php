@@ -2,6 +2,7 @@
 class TaxonomyEngineSetup {
     function __construct() {
         add_action( "init", array( $this, "taxonomy_setup" ), 10 );
+        add_action( "admin_init", array( $this, "ensure_roles" ), 10 );
     }
 
     function taxonomy_setup() {
@@ -17,5 +18,9 @@ class TaxonomyEngineSetup {
             "show_in_menu" => true,
             "show_admin_column" => true,
         ]);
+    }
+
+    function ensure_roles() {
+        add_role( "taxonomyengine-reveiwer", __("TaxonomyEngine Reviewer"));
     }
 }
