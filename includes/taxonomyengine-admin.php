@@ -7,6 +7,8 @@ class TaxonomyEngineAdmin {
         add_action('admin_menu', [ $this, 'menu' ]);
         require_once(plugin_basename('taxonomyengine-settings.php' ) );
         $taxonomyengine_settings = new TaxonomyEngineSettings($this->taxonomyengine_globals);
+        require_once(plugin_basename('taxonomyengine-reviewers.php' ) );
+        $taxonomyengine_reviewers = new TaxonomyEngineReviewers($this->taxonomyengine_globals);
         require_once(plugin_basename('taxonomyengine-reports.php' ) );
         $taxonomyengine_reports = new TaxonomyEngineReports($this->taxonomyengine_globals);
         require_once(plugin_basename('taxonomyengine-taxonomy.php' ) );
