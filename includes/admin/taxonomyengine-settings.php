@@ -40,7 +40,7 @@ class TaxonomyEngineSettings {
     }
 
     function taxonomyengine_settings() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ).'templates/admin/settings.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ).'../templates/admin/settings.php';
     }
 
     public function register_settings() {

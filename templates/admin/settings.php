@@ -43,18 +43,6 @@
                         <input type="number" name="taxonomyengine_pass_score" value="<?php echo get_option('taxonomyengine_pass_score') ?>" min="0" max="1" step="0.1">
                     </td>
                 </tr>
-                <tr>
-                    <th scope="row"><?php _e("Add a reviewer", "taxonomyengine") ?></th>
-                    <td>
-                    <?php
-                            $authors = TaxonomyEngineSettings::get_author_list();
-                            foreach($authors as $author) {
-                                $checked = (get_option('taxonomyengine_reviewers') == $article_strategy) ? 'checked' : '';
-                                echo '<input type="checkbox" name="taxonomyengine_reviewers" value="' . $author . '" ' . $checked . '> ' . $author . '<br>';
-                            }
-                        ?>
-                    </td>
-                </tr>
             </tbody>
         </table>
         <?=	submit_button(); ?>

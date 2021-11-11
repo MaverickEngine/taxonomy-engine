@@ -19,6 +19,6 @@ class TaxonomyEngineReports {
     }
 
     function taxonomyengine_reports() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ).'templates/admin/reports.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ).'../templates/admin/reports.php';
     }
 }

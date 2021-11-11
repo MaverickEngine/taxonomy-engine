@@ -1,8 +1,6 @@
 <div class="wrap">
-    <form method="post" action="options.php">
-        <?php settings_fields( 'taxonomyengine-settings-group' ); ?>
-        <?php do_settings_sections( 'taxonomyengine-settings-group' ); ?>
-        <h2><?php _e( 'TaxonomyEngine Settings', 'taxonomyengine' ); ?></h2>
+    <form method="post" action="">
+        <h2><?php _e( 'TaxonomyEngine Reviewers', 'taxonomyengine' ); ?></h2>
         <?php settings_errors(); ?>
         <hr>
         <table class="wp-list-table widefat fixed striped table-view-list">

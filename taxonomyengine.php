@@ -15,14 +15,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function taxonomy_engine_admin_init() {
+    if (!is_admin()) {
+        return;
+    }
     $taxonomyengine_globals = [];
     require_once( plugin_dir_path( __FILE__ ) . 'taxonomyengine_constants.php' );
     require_once( plugin_dir_path( __FILE__ ) . 'includes/taxonomyengine-setup.php' );
     $taxonomyengine_setup = new TaxonomyEngineSetup( $taxonomyengine_globals );
-    require_once(plugin_basename('includes/taxonomyengine-admin.php' ) );
+    require_once(plugin_basename('includes/admin/taxonomyengine-admin.php' ) );
     $taxonomyengine_admin = new TaxonomyEngineAdmin($taxonomyengine_globals);
 }
 add_action( 'init', 'taxonomy_engine_admin_init', 3 );
+
+function taxonomy_engine_frontend_init() {
+
+}
+add_action( 'init', 'taxonomy_engine_frontend_init', 3 );
+
 
 // Shortcodes
 function shortcodes($atts) {

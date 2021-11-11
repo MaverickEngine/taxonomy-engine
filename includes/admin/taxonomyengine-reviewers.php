@@ -21,7 +21,7 @@ class TaxonomyEngineReviewers {
     }
 
     function taxonomyengine_reviewers() {
-		require_once plugin_dir_path( dirname( __FILE__ ) ).'templates/admin/reviewers.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ).'../templates/admin/reviewers.php';
     }
 
     public function save_changes() {
