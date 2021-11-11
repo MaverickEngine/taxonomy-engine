@@ -6,7 +6,7 @@ class TaxonomyEngineReviewers {
     function __construct($taxonomyengine_globals) {
         $this->taxonomyengine_globals = &$taxonomyengine_globals;
         add_action('admin_menu', [ $this, 'reviewers_page' ]);
-        add_action('admin_init', [ $this, 'register_settings' ]);
+        add_action('admin_init', [ $this, 'save_changes' ]);
     }
 
     function reviewers_page() {
@@ -24,17 +24,24 @@ class TaxonomyEngineReviewers {
 		require_once plugin_dir_path( dirname( __FILE__ ) ).'templates/admin/reviewers.php';
     }
 
-    public function register_settings() {
-        foreach($this->options as $option) {
-            register_setting( 'taxonomyengine-reviewers-group', $option );
+    public function save_changes() {
+        $reviewer_weights = $_POST["taxonomyengine_reviewer_weight"];
+        if (isset($reviewer_weights)) {
+            foreach ($reviewer_weights as $reviewer_id => $weight) {
+                $this->set_reviewer_weight($reviewer_id, $weight);
+            }
         }
     }
 
+    protected function set_reviewer_weight($user_id, $weight) {
+        update_user_meta( $user_id, "taxonomyengine_reviewer_weight", $weight );
+    }
+
     public function get_reviewer_list() {
-        $users = get_users(array( 'role__in' => array( 'taxonomyengine-reveiwer' ) ) );
+        $users = get_users(array( 'role__in' => array( TAXONOMYENGINE_REVIEWER_ROLE ) ) );
         $user_list = [];
         foreach($users as $user) {
-            $user_list[$user->ID] = $user->display_name;
+            $user_list[$user->ID] = [ "name" => $user->display_name, "taxonomyengine_reviewer_weight" => get_user_meta( $user->ID, 'taxonomyengine_reviewer_weight', true ) ];
         }
         return $user_list;
     }

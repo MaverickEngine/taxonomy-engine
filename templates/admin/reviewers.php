@@ -15,13 +15,15 @@
             </thead>
             <tbody>
             <?php
-                $reviewers = TaxonomyEngineSettings::get_reviewer_list();
-                foreach($reviewers as $reviewer) { ?>
+                $reviewers = TaxonomyEngineReviewers::get_reviewer_list();
+                foreach($reviewers as $key => $reviewer) { ?>
                 <tr>
                     <td>
-                        <?= $reviewer ?>
+                        <a href="<?= admin_url("user-edit.php?user_id=" . $key) ?>"><?= $reviewer["name"] ?></a>
                     </td>
-                    <td></td>
+                    <td>
+                        <input type="number" name="taxonomyengine_reviewer_weight[<?= $key ?>]" id="taxonomyengine_reviewer_weight_<?= $key ?>" value="<?= $reviewer["taxonomyengine_reviewer_weight"] ?>" min="0" max="1" step="0.1" />
+                    </td>
                     <td></td>
                 </tr>
                 <?php } ?>

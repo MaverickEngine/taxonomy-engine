@@ -21,6 +21,6 @@ class TaxonomyEngineSetup {
     }
 
     function ensure_roles() {
-        add_role( "taxonomyengine-reveiwer", __("TaxonomyEngine Reviewer"));
+        add_role( TAXONOMYENGINE_REVIEWER_ROLE, __(TAXONOMYENGINE_REVIEWER_ROLE_NAME));
     }
 }
