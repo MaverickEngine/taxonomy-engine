@@ -1,6 +1,6 @@
 {
   "name": "taxonomy-engine",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Categorise your WordPress content with the assistance of machine learning and crowdsourcing",
   "main": "src/index.js",
   "scripts": {
