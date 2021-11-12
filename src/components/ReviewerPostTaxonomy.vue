@@ -1,9 +1,10 @@
 <template lang="pug">
 div
     h3 TaxonomyEngine
-    ProgressBar(size="large" text-position="inside" :val="current_page / page_count * 100"  :text="`${current_page} / ${page_count}`" text-fg-color="white" color="green")
-    TaxonomyEngineTaxonomies(:current_page="current_page" :page_count="page_count")
-    TaxonomyEngineNavigation(:current_page="current_page" :page_count="page_count")
+    ProgressBar(v-if="loading_state === 'loaded'" size="large" text-position="inside" :val="current_page / page_count * 100"  :text="`${current_page} / ${page_count}`" text-fg-color="white" color="green")
+    TaxonomyEngineTaxonomies(v-if="loading_state === 'loaded'" :current_page="current_page" :page_count="page_count")
+    TaxonomyEngineNavigation(v-if="loading_state === 'loaded'" :current_page="current_page" :page_count="page_count")
+    TaxonomyEngineDone(v-if="loading_state === 'done'")
 </template>
 
 <script lang="ts">
@@ -12,13 +13,15 @@ import ProgressBar from 'vue-simple-progress'
 import { mapState } from 'vuex'
 import TaxonomyEngineNavigation from './TaxonomyEngineNavigation.vue'
 import TaxonomyEngineTaxonomies from './TaxonomyEngineTaxonomies.vue'
+import TaxonomyEngineDone from './TaxonomyEngineDone.vue'
 
 export default Vue.extend({
     name: 'ReviewerPostTaxonomy',
     components: {
         ProgressBar,
         TaxonomyEngineNavigation,
-        TaxonomyEngineTaxonomies
+        TaxonomyEngineTaxonomies,
+        TaxonomyEngineDone
     },
     computed: {
         ...mapState("Post", [ 

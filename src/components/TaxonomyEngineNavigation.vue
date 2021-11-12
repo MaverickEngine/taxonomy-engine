@@ -4,7 +4,7 @@
         div.arrow.up
     div.nav_arrow(v-if="current_page < page_count" @click="next_page")
         div.arrow.down
-    div.done(v-if="current_page == page_count")
+    div.done(@click="done" v-if="current_page == page_count")
         div.done_text Done
 </template>
 
@@ -26,7 +26,8 @@ export default Vue.extend({
     methods: {
         ...mapActions("Post", [
             'prev_page',
-            'next_page'
+            'next_page',
+            'done'
         ])
     }
 })

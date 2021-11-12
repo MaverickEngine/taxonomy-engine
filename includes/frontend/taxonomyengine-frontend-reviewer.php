@@ -35,14 +35,10 @@ class TaxonomyEngineFrontendReviewer {
      */
     public function print_scripts() {
         if (self::_show_content()) {
-            $terms = get_terms("taxonomyengine", [
-                // 'taxonomy' => "taxonomyengine",
-                'hide_empty' => false,
-            ]);
-            $taxonomyengine_taxonomies = $terms; 
+            $id = get_the_ID();
             ?>
             <script type="text/javascript">
-                var taxonomyengine_taxonomies = <?php echo json_encode($taxonomyengine_taxonomies); ?>;
+                var taxonomyengine_post_id = <?= $id; ?>;
             </script>
             <?php
         }

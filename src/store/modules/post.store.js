@@ -13,7 +13,7 @@ const getters = {
 
 const actions = {
     async init({ commit, dispatch, state }) {
-        const taxonomies = (await axios.get(`/wp-json/taxonomyengine/v1/taxonomies`)).data;
+        const taxonomies = (await axios.get(`/wp-json/taxonomyengine/v1/taxonomies/${taxonomyengine_post_id}`)).data;
         commit("SET_KEYVAL", { key: "taxonomies", value: taxonomies });
         commit("SET_KEYVAL", { key: "page_count", value: Object.keys(taxonomies).length });
         dispatch("set_page", 1);
@@ -36,6 +36,14 @@ const actions = {
             dispatch("set_page", state.current_page - 1);
         }
     },
+    
+    done({ commit, state }) {
+        commit("SET_LOADING_STATE", "done");
+    },
+
+    async save_taxonomy({ commit, state }, taxonomy) {
+        await axios.post(`/wp-json/taxonomyengine/v1/taxonomies/${taxonomyengine_post_id}`, {taxonomy});
+    }
 }
 
 const mutations = {
