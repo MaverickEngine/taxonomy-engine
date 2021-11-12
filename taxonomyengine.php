@@ -5,7 +5,7 @@
  * Description: Categorise your WordPress content with the assistance of machine learning and crowdsourcing
  * Author: Daily Maverick, Jason Norwood-Young
  * Author URI: https://dailymaverick.co.za
- * Version: 0.0.2
+ * Version: 0.0.3
  * WC requires at least: 5.8.0
  * Tested up to: 5.8.1
  *
