@@ -1,15 +1,49 @@
 const path = require('path');
 const { VueLoaderPlugin } = require("vue-loader");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 module.exports = {
     mode: 'development',
     entry: './src/index.js',
     output: {
-    filename: 'main.js',
-        path: path.resolve(__dirname, 'includes/js'),
+    filename: 'taxonomyengine.js',
+        path: path.resolve(__dirname, 'dist'),
     },
     module: {
         rules: [
+            // {
+            //     test: /\.(js|ts)$/,
+            //     loader: 'babel-loader',
+            //     exclude: /(node_modules|bower_components)/,
+            //     options: {
+            //         presets: ["@babel/env"]
+            //     }
+            // },
+            {
+                test: /\.less$/,
+                use: [ 
+                    'style-loader',
+                    // MiniCssExtractPlugin.loader,
+                    'css-loader', 
+                    'less-loader'
+                ],
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                  "style-loader",
+                //   MiniCssExtractPlugin.loader,
+                  "css-loader",
+                  "sass-loader"
+                ]
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    // process.env.NODE_ENV !== 'production' ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
+                    'css-loader'
+                ]
+            },
             {
                 test: /\.vue$/,
                 loader: "vue-loader",
@@ -21,7 +55,10 @@ module.exports = {
         ]
     },
     plugins: [
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new MiniCssExtractPlugin({
+            filename: 'taxonomyengine.css',
+        }),
     ],
     resolve: {
         alias: {

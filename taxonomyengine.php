@@ -31,6 +31,13 @@ function taxonomy_engine_frontend_init() {
 }
 add_action( 'init', 'taxonomy_engine_frontend_init', 3 );
 
+function taxonomy_engine_api_init() {
+    $taxonomyengine_globals = [];
+    require_once(plugin_basename('includes/api/taxonomyengine-api.php' ) );
+    $taxonomyengine_api = new TaxonomyEngineAPI($taxonomyengine_globals);
+}
+add_action( 'init', 'taxonomy_engine_api_init', 3 );
+
 function taxonomy_engine_common_init() {
     require_once( plugin_dir_path( __FILE__ ) . 'includes/taxonomyengine-setup.php' );
     $taxonomyengine_setup = new TaxonomyEngineSetup( $taxonomyengine_globals );
