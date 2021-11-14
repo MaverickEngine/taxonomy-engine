@@ -5,7 +5,8 @@ const state = {
     page_count: 0,
     current_page: 1,
     taxonomies: {},
-    current_taxonomy: {}
+    current_taxonomy: {},
+    error: false,
 }
 
 const getters = {
@@ -13,11 +14,18 @@ const getters = {
 
 const actions = {
     async init({ commit, dispatch, state }) {
-        const taxonomies = (await axios.get(`/wp-json/taxonomyengine/v1/taxonomies/${taxonomyengine_post_id}`)).data;
-        commit("SET_KEYVAL", { key: "taxonomies", value: taxonomies });
-        commit("SET_KEYVAL", { key: "page_count", value: Object.keys(taxonomies).length });
-        dispatch("set_page", 1);
-        commit("SET_LOADING_STATE", "loaded")
+        try {
+            const taxonomies = (await axios.get(`/wp-json/taxonomyengine/v1/taxonomies/${taxonomyengine_post_id}`)).data;
+            commit("SET_KEYVAL", { key: "taxonomies", value: taxonomies });
+            commit("SET_KEYVAL", { key: "page_count", value: Object.keys(taxonomies).length });
+            dispatch("set_page", 1);
+            commit("SET_LOADING_STATE", "loaded")
+        } catch (error) {
+            console.error("Got an error", error.toString())
+            commit("SET_KEYVAL", { key: "error", value: error });
+            commit("SET_LOADING_STATE", "error")
+        }
+        
     },
 
     set_page({ commit, state }, page) {
@@ -42,7 +50,12 @@ const actions = {
     },
 
     async save_taxonomy({ commit, state }, taxonomy) {
-        await axios.post(`/wp-json/taxonomyengine/v1/taxonomies/${taxonomyengine_post_id}`, {taxonomy});
+        try {
+            await axios.post(`/wp-json/taxonomyengine/v1/taxonomies/${taxonomyengine_post_id}`, {taxonomy});
+        } catch (error) {
+            console.error(error)
+            commit("SET_KEYVAL", { key: "error", value: error });
+        }
     }
 }
 
