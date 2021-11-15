@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once( plugin_dir_path( __FILE__ ) . 'taxonomyengine_constants.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/db/taxonomyengine-db.php' );
 
 function taxonomy_engine_admin_init() {
     if (!is_admin()) {

@@ -4,6 +4,7 @@ class TaxonomyEngineAPI {
     function __construct($taxonomyengine_globals) {
         $this->taxonomyengine_globals = &$taxonomyengine_globals;
         add_action('rest_api_init', [$this, 'register_api_routes' ]);
+        $this->taxonomyengine_db = new TaxonomyEngineDB($this->taxonomyengine_globals);
     }
 
     function register_api_routes() {
@@ -33,20 +34,20 @@ class TaxonomyEngineAPI {
 
     function get_taxonomies($request) {
 
-        function map_term($term, $selected) {
+        function map_term($term, $selected, $user_selected) {
             $result = new stdClass();
             $result->id = $term->term_id;
             $result->name = $term->name;
             $result->slug = $term->slug;
             $result->description = $term->description;
-            if (in_array($term->term_id, $selected)) {
+            if (in_array($term->term_id, $user_selected)) {
                 $result->selected = true;
             }
-            $result->children = get_taxonomy_children($term->term_id, $selected);
+            $result->children = get_taxonomy_children($term->term_id, $selected, $user_selected);
             return $result;
         }
 
-        function get_taxonomy_children($parent_id, $selected) {
+        function get_taxonomy_children($parent_id, $selected, $user_selected) {
             $children = get_terms([
                 'taxonomy' => "taxonomyengine",
                 'hide_empty' => false,
@@ -54,11 +55,10 @@ class TaxonomyEngineAPI {
             ]);
             $children_array = [];
             foreach ($children as $child) {
-                $children_array[] = map_term($child, $selected);
+                $children_array[] = map_term($child, $selected, $user_selected);
             }
             return $children_array;
         }
-
         $terms = get_terms("taxonomyengine", [
             'parent' => 0,
             'hide_empty' => false,
@@ -67,24 +67,31 @@ class TaxonomyEngineAPI {
         $selected = array_map(function($term) {
             return $term->term_id;
         }, get_the_terms($post_id, "taxonomyengine"));
+        $taxonomyengine_review = $this->taxonomyengine_db->get_user_post_taxonomy(get_current_user_id(), $post_id);
+        $user_selected = array_map(function($taxonomy_review) {
+            return $taxonomy_review->taxonomy_id;
+        }, $taxonomyengine_review);
         $taxonomy = [];
-        // array_map(function($term) use (&$taxonomy) {
-        //     $taxonomy->{$term->slug} = map_term($term);
-        // }, $terms);
         foreach ($terms as $term) {
-            $taxonomy[] = map_term($term, $selected);
+            $taxonomy[] = map_term($term, $selected, $user_selected);
         }
         return $taxonomy;
     }
 
-    function post_post_taxonomy($request) { // TODO
+    function post_post_taxonomy($request) {
+        global $wpdb;
         $post_id = $request->get_param('post_id');
+        $user_id = get_current_user_id();
+        // Check if we have already started recording this submission from this user
+        $review = $this->taxonomyengine_db->get_or_create_review($user_id, $post_id);
+        
+        // Save to database table taxonomyengine_user_taxonomy
         $data = json_decode(file_get_contents('php://input'), true);
         $taxonomy = $data["taxonomy"];
         if ($taxonomy["selected"]) {
-            wp_set_object_terms( $post_id, $taxonomy["id"], "taxonomyengine", true );
+            $this->taxonomyengine_db->insert_taxonomy($review->id, $taxonomy["id"]);
         } else {
-            wp_remove_object_terms( $post_id, $taxonomy["id"], "taxonomyengine" );
+            $this->taxonomyengine_db->delete_taxonomy($review->id, $taxonomy["id"]);
         }
         return $taxonomy;
     }
