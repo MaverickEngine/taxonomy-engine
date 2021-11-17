@@ -1,4 +1,10 @@
-import axios from 'axios';
+import Axios from 'axios';
+const axios = Axios.create({
+    headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': _wpnonce
+    }
+});
 
 const state = {
     loading_state: "loading",
@@ -6,6 +12,7 @@ const state = {
     current_page: 1,
     taxonomies: {},
     current_taxonomy: {},
+    review: {},
     error: false,
 }
 
@@ -15,8 +22,14 @@ const getters = {
 const actions = {
     async init({ commit, dispatch, state }) {
         try {
+            const review = (await axios.get(`/wp-json/taxonomyengine/v1/review/${taxonomyengine_post_id}`)).data;
+            if (review.review_end) {
+                commit("SET_LOADING_STATE", "done");
+                return;
+            }
             const taxonomies = (await axios.get(`/wp-json/taxonomyengine/v1/taxonomies/${taxonomyengine_post_id}`)).data;
             commit("SET_KEYVAL", { key: "taxonomies", value: taxonomies });
+            commit("SET_KEYVAL", { key: "review", value: review });
             commit("SET_KEYVAL", { key: "page_count", value: Object.keys(taxonomies).length });
             dispatch("set_page", 1);
             commit("SET_LOADING_STATE", "loaded")
@@ -45,7 +58,8 @@ const actions = {
         }
     },
     
-    done({ commit, state }) {
+    async done({ commit, state }) {
+        await axios.post(`/wp-json/taxonomyengine/v1/taxonomies/${taxonomyengine_post_id}/done`);
         commit("SET_LOADING_STATE", "done");
     },
 

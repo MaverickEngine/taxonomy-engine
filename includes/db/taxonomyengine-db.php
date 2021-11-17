@@ -31,9 +31,20 @@ class TaxonomyEngineDB {
                 'post_id' => $post_id,
                 'user_id' => $user_id,
                 'review_start' => $result->review_start,
+                'review_end' => $result->review_end,
                 'user_taxonomy' => $this->get_user_taxonomy($review_id)
             ];
         }
+    }
+
+    public function end_review($review_id) {
+        global $wpdb;
+        $wpdb->update($this->reviews_tablename, [
+            'review_end' => current_time('mysql'),
+        ], [
+            'id' => $review_id,
+        ]);
+        return $wpdb->get_row("SELECT * FROM {$this->reviews_tablename} WHERE id = $review_id");
     }
 
     public function get_user_taxonomy($review_id) {
@@ -65,5 +76,19 @@ class TaxonomyEngineDB {
             'taxonomyengine_review_id' => $review_id,
             'taxonomy_id' => $taxonomy_id,
         ]);
+    }
+
+    public function reviewed_posts($user_id) {
+        global $wpdb;
+        $sql = "SELECT {$this->reviews_tablename}.post_id, {$this->reviews_tablename}.review_end FROM {$this->reviews_tablename}
+        WHERE {$this->reviews_tablename}.user_id = $user_id AND {$this->reviews_tablename}.review_end IS NOT NULL";
+        return $wpdb->get_results($sql);
+    }
+
+    public function articles_reviewed_report() {
+        global $wpdb;
+        $sql = "SELECT {$this->reviews_tablename}.user_id, COUNT(*) AS count FROM {$this->reviews_tablename}
+        GROUP BY {$this->reviews_tablename}.user_id";
+        return $wpdb->get_results($sql);
     }
 }

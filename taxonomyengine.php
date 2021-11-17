@@ -38,7 +38,14 @@ function taxonomy_engine_api_init() {
     require_once(plugin_basename('includes/api/taxonomyengine-api.php' ) );
     $taxonomyengine_api = new TaxonomyEngineAPI($taxonomyengine_globals);
 }
-add_action( 'init', 'taxonomy_engine_api_init', 3 );
+add_action( 'init', 'taxonomy_engine_api_init');
+
+function taxonomy_engine_navigation_init() {
+    $taxonomyengine_globals = [];
+    require_once(plugin_basename('includes/navigation/taxonomyengine-navigation.php' ) );
+    $taxonomyengine_navigation = new TaxonomyEngineNavigation($taxonomyengine_globals);
+}
+add_action( 'init', 'taxonomy_engine_navigation_init');
 
 function taxonomy_engine_common_init() {
     require_once( plugin_dir_path( __FILE__ ) . 'includes/taxonomyengine-setup.php' );

@@ -7,6 +7,7 @@ class TaxonomyEngineReviewers {
         $this->taxonomyengine_globals = &$taxonomyengine_globals;
         add_action('admin_menu', [ $this, 'reviewers_page' ]);
         add_action('admin_init', [ $this, 'save_changes' ]);
+        $this->taxonomyengine_db = new TaxonomyEngineDB($this->taxonomyengine_globals);
     }
 
     function reviewers_page() {
@@ -39,9 +40,16 @@ class TaxonomyEngineReviewers {
 
     public function get_reviewer_list() {
         $users = get_users(array( 'role__in' => array( TAXONOMYENGINE_REVIEWER_ROLE ) ) );
+        $reviewer_list = $this->taxonomyengine_db->articles_reviewed_report();
         $user_list = [];
         foreach($users as $user) {
-            $user_list[$user->ID] = [ "name" => $user->display_name, "taxonomyengine_reviewer_weight" => get_user_meta( $user->ID, 'taxonomyengine_reviewer_weight', true ) ];
+            $user_list[$user->ID] = [ 
+                "name" => $user->display_name, 
+                "taxonomyengine_reviewer_weight" => get_user_meta( $user->ID, 'taxonomyengine_reviewer_weight', true ),
+                "articles_reviewed" => (array_filter($reviewer_list, function($review) use ($user) {
+                    return $review->user_id == $user->ID;
+                }))["count"] ?? 0,
+            ];
         }
         return $user_list;
     }

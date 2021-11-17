@@ -12,24 +12,34 @@ class TaxonomyEngineAPI {
             'methods' => 'GET',
             'callback' => [$this, 'get_taxonomies'],
         ]);
+        register_rest_route( 'taxonomyengine/v1', '/user_id', [
+            'methods' => 'GET',
+            'callback' => [$this, 'get_userid'],
+        ]);
         register_rest_route( "taxonomyengine/v1", "/taxonomies/(?P<post_id>[0-9]+)", [
             'methods' => 'POST',
             'callback' => [$this, 'post_post_taxonomy'],
             'permission_callback' => [$this, 'check_post_access']
         ]);
-        register_rest_route( 'taxonomyengine/v1', '/next_article', [
-            'methods' => 'GET',
-            'callback' => [$this, 'get_next_article'],
+        register_rest_route( "taxonomyengine/v1", "/taxonomies/(?P<post_id>[0-9]+)/done", [
+            'methods' => ['POST', 'GET'],
+            'callback' => [$this, 'post_done'],
+            'permission_callback' => [$this, 'check_post_access']
         ]);
-        register_rest_route( 'taxonomyengine/v1', '/next_article/redirect', [
-            'methods' => 'GET',
-            'callback' => [$this, 'get_next_article_redirect'],
+        register_rest_route( "taxonomyengine/v1", "/review/(?P<post_id>[0-9]+)", [
+            'methods' => ['POST', 'GET'],
+            'callback' => [$this, 'get_review'],
+            'permission_callback' => [$this, 'check_post_access']
         ]);
     }
 
     function check_post_access(WP_REST_Request $request) { // TODO: This needs to be changed for crowdsourced submissions, or have another endpoint for that
         return true;
         return current_user_can('edit_posts');
+    }
+
+    function get_userid(WP_REST_Request $request) {
+        return get_current_user_id();
     }
 
     function get_taxonomies($request) {
@@ -59,6 +69,7 @@ class TaxonomyEngineAPI {
             }
             return $children_array;
         }
+        
         $terms = get_terms("taxonomyengine", [
             'parent' => 0,
             'hide_empty' => false,
@@ -78,7 +89,12 @@ class TaxonomyEngineAPI {
         return $taxonomy;
     }
 
-    function post_post_taxonomy($request) {
+    function get_review(WP_REST_Request $request) {
+        $post_id = $request->get_param('post_id');
+        return $this->taxonomyengine_db->get_or_create_review(get_current_user_id(), $post_id);
+    }   
+
+    function post_post_taxonomy(WP_REST_Request $request) {
         global $wpdb;
         $post_id = $request->get_param('post_id');
         $user_id = get_current_user_id();
@@ -96,52 +112,11 @@ class TaxonomyEngineAPI {
         return $taxonomy;
     }
 
-    function get_next_article() {
-        $stragegy = get_option( "taxonomyengine_article_strategy", "random" );
-        switch ($stragegy) {
-            case "random":
-                return $this->random_post();
-            case "newest":
-                return $this->newest();
-            case "oldest":
-                return $this->oldest();
-            default:
-                return $this->random_post();
-        }
-    }
-
-    function get_next_article_redirect() {
-        $next_article = $this->get_next_article();
-        header("Location: " . get_permalink($next_article->ID));
-        die();
-    }
-
-    function random_post() {
-        $posts = get_posts([
-            'post_type' => 'post',
-            'numberposts' => 1,
-            'orderby' => 'rand',
-        ]);
-        return $posts[0];
-    }
-
-    function newest_post() {
-        $posts = get_posts([
-            'post_type' => 'post',
-            'numberposts' => 1,
-            'orderby' => 'date',
-            'order' => 'DESC',
-        ]);
-        return $posts[0];
-    }
-
-    function oldest_post() {
-        $posts = get_posts([
-            'post_type' => 'post',
-            'numberposts' => 1,
-            'orderby' => 'date',
-            'order' => 'ASC',
-        ]);
-        return $posts[0];
+    function post_done(WP_REST_Request $request) {
+        $post_id = $request->get_param('post_id');
+        $user_id = get_current_user_id();
+        $review = $this->taxonomyengine_db->get_or_create_review($user_id, $post_id);
+        $result = $this->taxonomyengine_db->end_review($review->id);
+        return $result;
     }
 }

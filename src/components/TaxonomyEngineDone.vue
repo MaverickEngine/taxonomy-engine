@@ -1,7 +1,7 @@
 <template lang="pug">
 div
-    h2 {{message}}
-    p Ready to rate another article?
+    h2 Article tagged
+    p {{message}}
     a(href="/wp-json/taxonomyengine/v1/next_article/redirect") Next Article
 </template>
 

@@ -36,9 +36,11 @@ class TaxonomyEngineFrontendReviewer {
     public function print_scripts() {
         if (self::_show_content()) {
             $id = get_the_ID();
+            $_wpnonce = wp_create_nonce( 'wp_rest' );
             ?>
             <script type="text/javascript">
                 var taxonomyengine_post_id = <?= $id; ?>;
+                var _wpnonce = "<?= $_wpnonce; ?>";
             </script>
             <?php
         }

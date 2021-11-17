@@ -22,7 +22,7 @@
                     <td>
                         <input type="number" name="taxonomyengine_reviewer_weight[<?= $key ?>]" id="taxonomyengine_reviewer_weight_<?= $key ?>" value="<?= $reviewer["taxonomyengine_reviewer_weight"] ?>" min="0" max="1" step="0.1" />
                     </td>
-                    <td></td>
+                    <td><?= $reviewer["articles_reviewed"] ?></td>
                 </tr>
                 <?php } ?>
             </tbody>
