@@ -39,7 +39,7 @@ class TaxonomyEngineSetup {
             post_id mediumint(9) NOT NULL,
             user_id mediumint(9) NOT NULL,
             review_start datetime DEFAULT now() NOT NULL,
-            review_end datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+            review_end datetime DEFAULT NULL,
             UNIQUE KEY id (id),
             KEY post_id (post_id),
             KEY user_id (user_id),
