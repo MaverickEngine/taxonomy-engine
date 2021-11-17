@@ -17,6 +17,7 @@
                 foreach($reviewers as $key => $reviewer) { ?>
                 <tr>
                     <td>
+                        <?= $reviewer["ID"] ?>
                         <a href="<?= admin_url("user-edit.php?user_id=" . $key) ?>"><?= $reviewer["name"] ?></a>
                     </td>
                     <td>

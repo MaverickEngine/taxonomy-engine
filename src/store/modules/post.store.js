@@ -23,8 +23,12 @@ const actions = {
     async init({ commit, dispatch, state }) {
         try {
             const review = (await axios.get(`/wp-json/taxonomyengine/v1/review/${taxonomyengine_post_id}`)).data;
-            if (review.review_end) {
+            if (review.review_end && review.review_end !== "0000-00-00 00:00:00") {
                 commit("SET_LOADING_STATE", "done");
+                return;
+            }
+            if (review.passed) {
+                commit("SET_LOADING_STATE", "passed");
                 return;
             }
             const taxonomies = (await axios.get(`/wp-json/taxonomyengine/v1/taxonomies/${taxonomyengine_post_id}`)).data;

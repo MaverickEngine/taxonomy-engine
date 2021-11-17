@@ -43,12 +43,17 @@ class TaxonomyEngineReviewers {
         $reviewer_list = $this->taxonomyengine_db->articles_reviewed_report();
         $user_list = [];
         foreach($users as $user) {
+            $review_count = 0;
+            foreach($reviewer_list as $reviewer) {
+                if ($reviewer->user_id == $user->ID) {
+                    $review_count = $reviewer->count;
+                    break;
+                }
+            }
             $user_list[$user->ID] = [ 
                 "name" => $user->display_name, 
                 "taxonomyengine_reviewer_weight" => get_user_meta( $user->ID, 'taxonomyengine_reviewer_weight', true ),
-                "articles_reviewed" => (array_filter($reviewer_list, function($review) use ($user) {
-                    return $review->user_id == $user->ID;
-                }))["count"] ?? 0,
+                "articles_reviewed" => $review_count,
             ];
         }
         return $user_list;

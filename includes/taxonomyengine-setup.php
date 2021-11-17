@@ -38,6 +38,7 @@ class TaxonomyEngineSetup {
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             post_id mediumint(9) NOT NULL,
             user_id mediumint(9) NOT NULL,
+            user_score float NOT NULL,
             review_start datetime DEFAULT now() NOT NULL,
             review_end datetime DEFAULT NULL,
             UNIQUE KEY id (id),
@@ -52,10 +53,24 @@ class TaxonomyEngineSetup {
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             taxonomyengine_review_id mediumint(9) NOT NULL,
             taxonomy_id mediumint(9) NOT NULL,
+            user_score float NOT NULL,
             UNIQUE KEY id (id),
             KEY taxonomyengine_review_id (taxonomyengine_review_id)
         ) $charset_collate;";
         $result = dbDelta( $reviews_taxonomy_sql );
+
+        $passed_posts_table_name = $wpdb->prefix . "taxonomyengine_passed_posts";
+        $passed_posts_sql = "CREATE TABLE $passed_posts_table_name (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            post_id mediumint(9) NOT NULL,
+            score mediumint(9) NOT NULL,
+            date_complete datetime DEFAULT now() NOT NULL,
+            UNIQUE KEY id (id),
+            UNIQUE KEY post_id (post_id),
+            KEY date_complete (date_complete)
+        ) $charset_collate;";
+        $result = dbDelta( $passed_posts_sql );
+
         update_option( "taxonomyengine_db_version", TAXONOMYENGINE_DB_VERSION );
     }
 }

@@ -6,6 +6,7 @@ div
     TaxonomyEngineTaxonomies(v-if="loading_state === 'loaded'" :current_page="current_page" :page_count="page_count")
     TaxonomyEngineNavigation(v-if="loading_state === 'loaded'" :current_page="current_page" :page_count="page_count")
     TaxonomyEngineDone(v-if="loading_state === 'done'")
+    TaxonomyEnginePassed(v-if="loading_state === 'passed'")
 </template>
 
 <script lang="ts">
@@ -15,6 +16,7 @@ import { mapState } from 'vuex'
 import TaxonomyEngineNavigation from './TaxonomyEngineNavigation.vue'
 import TaxonomyEngineTaxonomies from './TaxonomyEngineTaxonomies.vue'
 import TaxonomyEngineDone from './TaxonomyEngineDone.vue'
+import TaxonomyEnginePassed from './TaxonomyEnginePassed.vue'
 import Error from './Error.vue'
 
 export default Vue.extend({
@@ -24,7 +26,8 @@ export default Vue.extend({
         TaxonomyEngineNavigation,
         TaxonomyEngineTaxonomies,
         TaxonomyEngineDone,
-        Error
+        Error,
+        TaxonomyEnginePassed
     },
     computed: {
         ...mapState("Post", [ 
