@@ -1,5 +1,7 @@
 <?php
-
+// TODO: This needs a cleanup before launch
+// TODO: Bring setup in here
+// TODO: Rethink table names
 class TaxonomyEngineDB {
     public function __construct() {
         global $wpdb;

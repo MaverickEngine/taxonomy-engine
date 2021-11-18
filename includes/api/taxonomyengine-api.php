@@ -6,8 +6,8 @@ class TaxonomyEngineAPI {
         add_action('rest_api_init', [$this, 'register_api_routes' ]);
         $this->taxonomyengine_db = new TaxonomyEngineDB($this->taxonomyengine_globals);
     }
-
-    function register_api_routes() {
+    
+    function register_api_routes() { // TODO: Clean this up
         register_rest_route( 'taxonomyengine/v1', '/taxonomies/(?P<post_id>[0-9]+)', [
             'methods' => 'GET',
             'callback' => [$this, 'get_taxonomies'],
