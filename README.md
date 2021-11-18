@@ -2,6 +2,8 @@
 
 Categorise your WordPress content with the assistance of machine learning and crowdsourcing
 
+* This plugin is in early development. Use at own risk.
+
 ## What does it do?
 
 TaxonomyEngine provides a *process* for _reliably_ tagging some of your existing content on your Wordpress website, trains a machine learning model based on your tagging, and then automagically tags the rest of your content. 

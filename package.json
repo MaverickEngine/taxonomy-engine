@@ -4,7 +4,9 @@
   "description": "Categorise your WordPress content with the assistance of machine learning and crowdsourcing",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.prod.js",
+    "watch": "webpack --config webpack.dev.js --watch"
   },
   "repository": {
     "type": "git",
@@ -32,6 +34,8 @@
     "vue-template-compiler": "^2.6.14",
     "vuex": "^3.6.2",
     "webpack": "^5.63.0",
-    "webpack-cli": "^4.9.1"
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-merge": "^5.8.0"
   }
 }

@@ -1,12 +1,13 @@
 const path = require('path');
 const { VueLoaderPlugin } = require("vue-loader");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const WebpackBundleAnalyzer = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
     mode: 'development',
     entry: './src/index.js',
     output: {
-    filename: 'taxonomyengine.js',
+        filename: 'taxonomyengine.js',
         path: path.resolve(__dirname, 'dist'),
     },
     module: {
@@ -59,10 +60,11 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'taxonomyengine.css',
         }),
+        new WebpackBundleAnalyzer()
     ],
-    resolve: {
-        alias: {
-            'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
-        }
-    }
+    // resolve: {
+    //     alias: {
+    //         'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
+    //     }
+    // }
 };
