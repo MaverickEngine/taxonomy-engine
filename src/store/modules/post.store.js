@@ -33,7 +33,7 @@ const actions = {
                 return;
             }
             const taxonomies = (await axios.get(`/wp-json/taxonomyengine/v1/taxonomies/${taxonomyengine_post_id}`)).data;
-            const selected_taxonomies = review.terms.map(term => term.term_id);
+            const selected_taxonomies = review.terms ? review.terms.map(term => term.term_id) : [];
             commit("SET_KEYVAL", { key: "selected_taxonomies", value: selected_taxonomies });
             commit("SET_KEYVAL", { key: "taxonomies", value: taxonomies });
             commit("SET_KEYVAL", { key: "review", value: review });
