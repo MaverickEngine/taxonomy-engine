@@ -14,6 +14,7 @@ const state = {
     current_taxonomy: {},
     review: {},
     error: false,
+    selected_taxonomies: [],
 }
 
 const getters = {
@@ -32,6 +33,8 @@ const actions = {
                 return;
             }
             const taxonomies = (await axios.get(`/wp-json/taxonomyengine/v1/taxonomies/${taxonomyengine_post_id}`)).data;
+            const selected_taxonomies = review.terms.map(term => term.term_id);
+            commit("SET_KEYVAL", { key: "selected_taxonomies", value: selected_taxonomies });
             commit("SET_KEYVAL", { key: "taxonomies", value: taxonomies });
             commit("SET_KEYVAL", { key: "review", value: review });
             commit("SET_KEYVAL", { key: "page_count", value: Object.keys(taxonomies).length });
@@ -42,7 +45,6 @@ const actions = {
             commit("SET_KEYVAL", { key: "error", value: error });
             commit("SET_LOADING_STATE", "error")
         }
-        
     },
 
     set_page({ commit, state }, page) {
