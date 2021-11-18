@@ -5,7 +5,8 @@ class TaxonomyEngineSettings {
         "taxonomyengine_post_types",
         "taxonomyengine_article_strategy",
         "taxonomyengine_percentage_pass",
-        "taxonomyengine_pass_score"
+        "taxonomyengine_pass_score",
+        "taxonomyengine_developer_mode",
     ];
 
     const TAXONOMYENGINE_ARTICLE_SELECTION_STRATEGIES = [

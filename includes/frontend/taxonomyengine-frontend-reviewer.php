@@ -6,6 +6,7 @@ class TaxonomyEngineFrontendReviewer {
      * Constructor
      */
     public function __construct() {
+        $this->developer_mode = get_option('taxonomyengine_developer_mode');
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
         add_action( 'wp_footer', array( $this, 'print_scripts' ) );
@@ -16,8 +17,12 @@ class TaxonomyEngineFrontendReviewer {
      * Enqueue scripts
      */
     public function enqueue_scripts() {
-        if (self::_show_content()) {
-            wp_enqueue_script( 'taxonomyengine', plugins_url( '../../dist/taxonomyengine.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
+        if ($this->_show_content()) {
+            if ($this->developer_mode) {
+                wp_enqueue_script( 'taxonomyengine', plugins_url( '../../dist/taxonomyengine.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
+            } else {
+                wp_enqueue_script( 'taxonomyengine', plugins_url( '../../dist/taxonomyengine.min.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
+            }
         }
     }
 
@@ -25,7 +30,7 @@ class TaxonomyEngineFrontendReviewer {
      * Enqueue styles
      */
     public function enqueue_styles() {
-        if (self::_show_content()) {
+        if ($this->_show_content()) {
             wp_enqueue_style( 'taxonomyengine', plugins_url( '../../dist/taxonomyengine.css', __FILE__ ), array(), '1.0.0' );
         }
     }
@@ -34,7 +39,7 @@ class TaxonomyEngineFrontendReviewer {
      * Print scripts
      */
     public function print_scripts() {
-        if (self::_show_content()) {
+        if ($this->_show_content()) {
             $id = get_the_ID();
             $_wpnonce = wp_create_nonce( 'wp_rest' );
             ?>
@@ -63,7 +68,7 @@ class TaxonomyEngineFrontendReviewer {
     }
 
     public function append_reviewer_content( $content ) {
-        if (self::_show_content()) {
+        if ($this->_show_content()) {
             ob_start();
             require_once(plugin_dir_path( dirname( __FILE__ ) ).'../templates/frontend/reviewer_post.php');
             $new_content .= ob_get_clean();

@@ -43,6 +43,12 @@
                         <input type="number" name="taxonomyengine_pass_score" value="<?php echo get_option('taxonomyengine_pass_score') ?>" min="0" max="1" step="0.1">
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row"><?php _e("Developer mode", "taxonomyengine") ?></th>
+                    <td>
+                        <input type="checkbox" name="taxonomyengine_developer_mode" value="1" <?php echo get_option('taxonomyengine_developer_mode') ? 'checked' : '' ?>>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <?=	submit_button(); ?>
