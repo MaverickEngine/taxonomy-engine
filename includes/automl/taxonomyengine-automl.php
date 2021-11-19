@@ -1,4 +1,5 @@
 <?php
+require_once(dirname(__DIR__) . '/../vendor/autoload.php');
 
 class TaxonomyEngineAutoML {
     private $options = [
@@ -15,7 +16,7 @@ class TaxonomyEngineAutoML {
         add_action('admin_menu', [ $this, 'settings_page' ]);
         add_action('admin_init', [ $this, 'register_settings' ]);
         add_action('admin_post_upload_google_credentials_file', [ $this, 'upload_google_credentials_file' ]);
-        // add_action('rest_api_init', [$this, 'register_api_routes' ]);
+        add_action('rest_api_init', [$this, 'register_api_routes' ]);
     }
 
     public function settings_page() {
@@ -108,5 +109,28 @@ class TaxonomyEngineAutoML {
             $data = self::decrypt(get_option( "taxonomyengine_google_credentials" ));
             return json_decode($data, true);
         }
+    }
+
+    function register_api_routes() { // TODO: Clean this up
+        register_rest_route( "taxonomyengine/v1", "/automl/upload", [
+            'methods' => 'GET',
+            'callback' => [$this, 'automl_upload'],
+            'permission_callback' => [$this, 'check_edit_post_access']
+        ]);
+    }
+
+    public function automl_upload() {
+        $credentials = self::get_google_credentials();
+        if (!$credentials) {
+            return [
+                'success' => false,
+                'message' => 'No credentials found'
+            ];
+        }
+        
+    }
+
+    function check_post_access(WP_REST_Request $request) {
+        return current_user_can('edit_posts');
     }
 }

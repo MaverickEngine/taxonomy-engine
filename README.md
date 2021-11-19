@@ -15,3 +15,13 @@ You decide which users are TaxonomyEngine content reviewers, and you define your
 This means that you could require two interns to agree on a tag to accept an article, while a senior editor's tags could immediately accepted. If you crowdsource from your readers, perhaps you need ten of them to agree. Or five readers and one intern would approve the tagging.
 
 As the system learns your article tagging based on your specific content, it will start suggesting tags. We track the accuracy of the machine learning predictions, and once it passes a defined point, we can autotag the historic corpus.
+
+## Installing from Source
+
+### Installing dependencies
+
+```
+npm install
+npm run build
+composer update --ignore-platform-reqs
+```
