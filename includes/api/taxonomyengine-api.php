@@ -35,7 +35,6 @@ class TaxonomyEngineAPI {
     }
 
     function check_post_access(WP_REST_Request $request) { // TODO: This needs to be changed for crowdsourced submissions, or have another endpoint for that
-        return true;
         return current_user_can('edit_posts');
     }
 
