@@ -41,6 +41,9 @@ class TaxonomyEngineSettings {
     }
 
     function taxonomyengine_settings() {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
 		require_once plugin_dir_path( dirname( __FILE__ ) ).'../templates/admin/settings.php';
     }
 
@@ -50,7 +53,7 @@ class TaxonomyEngineSettings {
         }
     }
 
-    public function get_article_strategies() {
+    static function get_article_strategies() {
         return self::TAXONOMYENGINE_ARTICLE_SELECTION_STRATEGIES;
     }
 

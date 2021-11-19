@@ -53,6 +53,13 @@ function taxonomy_engine_common_init() {
 }
 add_action( 'init', 'taxonomy_engine_common_init', 2 );
 
+function taxonomy_engine_automl_init() {
+    $taxonomyengine_globals = [];
+    require_once(plugin_basename('includes/automl/taxonomyengine-automl.php' ) );
+    $taxonomyengine_automl = new TaxonomyEngineAutoML($taxonomyengine_globals);
+}
+add_action( 'init', 'taxonomy_engine_automl_init');
+
 // Shortcodes
 function shortcodes($atts) {
 	// require(plugin_basename("templates/debicheck-form-shortcode.php"));
