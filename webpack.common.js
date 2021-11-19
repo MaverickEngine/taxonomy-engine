@@ -1,7 +1,6 @@
 const path = require('path');
 const { VueLoaderPlugin } = require("vue-loader");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const WebpackBundleAnalyzer = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
     mode: 'development',
@@ -60,7 +59,6 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'taxonomyengine.css',
         }),
-        new WebpackBundleAnalyzer()
     ],
     // resolve: {
     //     alias: {
