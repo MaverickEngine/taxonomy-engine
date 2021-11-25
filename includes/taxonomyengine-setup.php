@@ -4,9 +4,21 @@ class TaxonomyEngineSetup {
         add_action( "init", array( $this, "taxonomy_setup" ), 10 );
         add_action( "init", array( $this, "db_setup" ), 10 );
         add_action( "admin_init", array( $this, "ensure_roles" ), 10 );
+        add_action('profile_update', [ $this, 'set_reviewer_weight' ], 20, 2 );
+        add_action('user_register', [ $this, 'set_reviewer_weight' ], 20, 2 );
+        add_action("admin_init", [ $this, "check_setup_tasks" ], 10);
     }
 
-    function taxonomy_setup() {
+    public static function has_terms() {
+        // Check if TaxonomyEngine has terms
+        $terms = get_terms("taxonomyengine", [
+            'parent' => 0,
+            'hide_empty' => false,
+        ]);
+        return !empty($terms);
+    }
+
+    public function taxonomy_setup() {
         register_taxonomy( "taxonomyengine", ["post"], [
             "hierarchical" => true,
             "label" => "TaxonomyEngine",
@@ -21,11 +33,11 @@ class TaxonomyEngineSetup {
         ]);
     }
 
-    function ensure_roles() {
+    public function ensure_roles() {
         add_role( TAXONOMYENGINE_REVIEWER_ROLE, __(TAXONOMYENGINE_REVIEWER_ROLE_NAME));
     }
 
-    function db_setup() {
+    public function db_setup() {
         $taxonomyengine_db_version = get_option("taxonomyengine_db_version", 0 );
         if ($taxonomyengine_db_version === TAXONOMYENGINE_DB_VERSION) {
             return;
@@ -72,5 +84,93 @@ class TaxonomyEngineSetup {
         $result = dbDelta( $passed_posts_sql );
 
         update_option( "taxonomyengine_db_version", TAXONOMYENGINE_DB_VERSION );
+    }
+
+    public function set_reviewer_weight($user_id, $user) {
+        if (empty($user->roles)) {
+            $user = get_user_by('id', $user_id);
+        }
+        if ( in_array( TAXONOMYENGINE_REVIEWER_ROLE, (array) $user->roles ) ) {
+            $existing_weight = get_user_meta( $user_id, "taxonomyengine_reviewer_weight", true );
+            if (empty($existing_weight)) {
+                update_user_meta( $user_id, "taxonomyengine_reviewer_weight", TAXONOMYENGINE_DEFAULT_STARTING_WEIGHT );
+            }
+        }
+    }
+
+    public static function check_setup_tasks() {
+        if ($_GET["taxonomyengine_predefined_terms"]) {
+            self::create_predefined_terms();
+        }
+        $redirect = false;
+        if ($_GET["delete_terms"]) {
+            self::delete_terms();
+        }
+        if ($_GET["taxonomyengine_set_post_type"]) {
+            update_option( "taxonomyengine_post_types", explode(",", $_GET["taxonomyengine_set_post_type"]) );
+            $redirect = true;
+        }
+        if ($_GET["taxonomyengine_set_article_strategy"]) {
+            update_option( "taxonomyengine_article_strategy", $_GET["taxonomyengine_set_article_strategy"] );
+            $redirect = true;
+        }
+        if ($_GET["taxonomyengine_set_percentage_pass"]) {
+            update_option( "taxonomyengine_percentage_pass", $_GET["taxonomyengine_set_percentage_pass"] );
+            $redirect = true;
+        }
+        if ($_GET["taxonomyengine_set_pass_score"]) {
+            update_option( "taxonomyengine_pass_score", $_GET["taxonomyengine_set_pass_score"] );
+            $redirect = true;
+        }
+        if ($redirect) {
+            wp_redirect(admin_url("admin.php?page=taxonomyengine"));
+            exit;
+        }
+    }
+
+    // For testing, don't show on front end
+    private static function delete_terms() {
+        $terms = get_terms("taxonomyengine", [
+            // 'parent' => 0,
+            'hide_empty' => false,
+        ]);
+        foreach ($terms as $term) {
+            wp_delete_term( $term->term_id, "taxonomyengine" );
+        }
+    }
+
+    private static function _convert_taxonomy($taxonomy) {
+        foreach($taxonomy as $key => $item) {
+            $parent = term_exists( $item->parent, "taxonomyengine" );
+            if ($parent) {
+                $parent_id = $parent["term_id"];
+            } else {
+                $parent_id = 0;
+            }
+            wp_insert_term(
+                $item->name,
+                'taxonomyengine',
+                array(
+                    'description'=> $item->description,
+                    'slug' => $item->slug,
+                    'parent' => $parent_id
+                )
+            );
+            if (isset($item->children)) {
+                self::_convert_taxonomy($item->children);
+            }
+        }
+    }
+
+    private static function create_predefined_terms() {
+        $existing_terms = get_terms("taxonomyengine", [
+            'parent' => 0,
+            'hide_empty' => false,
+        ]);
+        if (!empty($existing_terms)) {
+            return;
+        }
+        $fname = plugin_dir_path( dirname( __FILE__ ) ).'/data/default_taxonomy.json';
+        self::_convert_taxonomy(json_decode(file_get_contents($fname)));
     }
 }

@@ -21,15 +21,14 @@ class TaxonomyEngineSettings {
         "taxonomyengine-tags-pass-custom" => "Custom",
     ];
     
-    function __construct($taxonomyengine_globals) {
+    public function __construct($taxonomyengine_globals) {
         $this->taxonomyengine_globals = &$taxonomyengine_globals;
         add_action('admin_menu', [ $this, 'settings_page' ]);
         add_action('admin_init', [ $this, 'register_settings' ]);
-        add_action('profile_update', [ $this, 'set_reviewer_weight' ], 20, 2 );
-        add_action('user_register', [ $this, 'set_reviewer_weight' ], 20, 2 );
+        
     }
 
-    function settings_page() {
+    public function settings_page() {
         add_submenu_page(
             'taxonomyengine',
 			'TaxonomyEngine Settings',
@@ -40,9 +39,25 @@ class TaxonomyEngineSettings {
 		);
     }
 
-    function taxonomyengine_settings() {
+    public function taxonomyengine_settings() {
         if (!current_user_can('manage_options')) {
             wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+        // TaxonomyEngineSetup::check_setup_tasks();
+        if (!TaxonomyEngineSetup::has_terms()) {
+            echo '<div class="notice notice-error"><p>TaxonomyEngine has no terms set. Please <a href="/wp-admin/edit-tags.php?taxonomy=taxonomyengine">set some terms</a> or <a href="/wp-admin/admin.php?page=taxonomyengine&taxonomyengine_predefined_terms=true">use our pre-defined terms</a>.</p></div>';
+        }
+        if (empty(get_option('taxonomyengine_post_types'))) {
+            echo '<div class="notice notice-error"><p>TaxonomyEngine has no post types set. Set <a href="/wp-admin/admin.php?page=taxonomyengine&taxonomyengine_set_post_type=post">Post</a> as a post type?</p></div>';
+        }
+        if (empty(get_option('taxonomyengine_article_strategy'))) {
+            echo '<div class="notice notice-error"><p>TaxonomyEngine has no article strategy set. Set <a href="/wp-admin/admin.php?page=taxonomyengine&taxonomyengine_set_article_strategy=Latest">Latest</a> as the article strategy?</p></div>';
+        }
+        if (empty(get_option('taxonomyengine_percentage_pass'))) {
+            echo '<div class="notice notice-error"><p>TaxonomyEngine has no percentage pass set. Set <a href="/wp-admin/admin.php?page=taxonomyengine&taxonomyengine_set_percentage_pass=50">50%</a> as the percentage pass?</p></div>';
+        }
+        if (empty(get_option('taxonomyengine_pass_score'))) {
+            echo '<div class="notice notice-error"><p>TaxonomyEngine has no pass score set. Set <a href="/wp-admin/admin.php?page=taxonomyengine&taxonomyengine_set_pass_score=0.8">0.8</a> as the pass score?</p></div>';
         }
 		require_once plugin_dir_path( dirname( __FILE__ ) ).'../templates/admin/settings.php';
     }
@@ -65,17 +80,4 @@ class TaxonomyEngineSettings {
         }
         return $user_list;
     }
-
-    function set_reviewer_weight($user_id, $user) {
-        if (empty($user->roles)) {
-            $user = get_user_by('id', $user_id);
-        }
-        if ( in_array( TAXONOMYENGINE_REVIEWER_ROLE, (array) $user->roles ) ) {
-            $existing_weight = get_user_meta( $user_id, "taxonomyengine_reviewer_weight", true );
-            if (empty($existing_weight)) {
-                update_user_meta( $user_id, "taxonomyengine_reviewer_weight", TAXONOMYENGINE_DEFAULT_STARTING_WEIGHT );
-            }
-        }
-    }
-
 }
