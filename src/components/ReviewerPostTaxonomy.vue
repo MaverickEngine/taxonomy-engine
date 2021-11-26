@@ -1,8 +1,8 @@
 <template lang="pug">
-div
+div.taxonomyengine
     h3 TaxonomyEngine
     Error(v-if="loading_state === 'error'" :error="error")
-    ProgressBar(v-if="loading_state === 'loaded'" size="large" text-position="inside" :val="current_page / page_count * 100"  :text="`${current_page} / ${page_count}`" text-fg-color="white" color="green")
+    ProgressBar.progressbar(v-if="loading_state === 'loaded'" size="large" text-position="bottom" :val="current_page / page_count * 100" :text="`${current_page} / ${page_count}`" text-fg-color="black" color="green")
     TaxonomyEngineTaxonomies(v-if="loading_state === 'loaded'" :current_page="current_page" :page_count="page_count")
     TaxonomyEngineNavigation(v-if="loading_state === 'loaded'" :current_page="current_page" :page_count="page_count")
     TaxonomyEngineDone(v-if="loading_state === 'done'")
@@ -50,3 +50,6 @@ export default Vue.extend({
     }
 })
 </script>
+
+<style lang="less" scoped>
+</style>

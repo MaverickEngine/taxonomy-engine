@@ -11,19 +11,11 @@ module.exports = {
     },
     module: {
         rules: [
-            // {
-            //     test: /\.(js|ts)$/,
-            //     loader: 'babel-loader',
-            //     exclude: /(node_modules|bower_components)/,
-            //     options: {
-            //         presets: ["@babel/env"]
-            //     }
-            // },
             {
                 test: /\.less$/,
                 use: [ 
-                    'style-loader',
-                    // MiniCssExtractPlugin.loader,
+                    // 'style-loader',
+                    MiniCssExtractPlugin.loader,
                     'css-loader', 
                     'less-loader'
                 ],
@@ -31,8 +23,8 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: [
-                  "style-loader",
-                //   MiniCssExtractPlugin.loader,
+                //   "style-loader",
+                  MiniCssExtractPlugin.loader,
                   "css-loader",
                   "sass-loader"
                 ]
@@ -40,7 +32,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    // process.env.NODE_ENV !== 'production' ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
+                    MiniCssExtractPlugin.loader,
                     'css-loader'
                 ]
             },
@@ -60,9 +52,4 @@ module.exports = {
             filename: 'taxonomyengine.css',
         }),
     ],
-    // resolve: {
-    //     alias: {
-    //         'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
-    //     }
-    // }
 };
