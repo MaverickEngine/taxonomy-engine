@@ -1,4 +1,6 @@
 import Axios from 'axios';
+import moment from 'moment';
+
 const axios = Axios.create({
     headers: {
         'Content-Type': 'application/json',
@@ -8,6 +10,9 @@ const axios = Axios.create({
 
 const state = {
     loading_state: "loading",
+    reviews_last_week: "...",
+    reviews_last_week_average: "...",
+    review_end_histogram: [],
     error: false,
 }
 
@@ -19,6 +24,10 @@ const actions = {
         try {
             const review_end_histogram = await axios.get(`/wp-json/taxonomyengine/v1/reports/review_end_histogram`);
             commit("SET_KEYVAL", { key: "review_end_histogram", value: review_end_histogram.data });
+            const reviews_last_week = review_end_histogram.data.filter(row => moment(row.date).isSameOrAfter(moment().subtract(7, 'days'))).reduce((acc, row) => acc + parseInt(row.count), 0);
+            commit("SET_KEYVAL", { key: "reviews_last_week", value: reviews_last_week });
+            const reviews_last_week_average = reviews_last_week / 7;
+            commit("SET_KEYVAL", { key: "reviews_last_week_average", value: Math.round(reviews_last_week_average * 100) / 100 });
             // const review = (await axios.get(`/wp-json/taxonomyengine/v1/review/${taxonomyengine_post_id}`)).data;
             // if (review.review_end && review.review_end !== "0000-00-00 00:00:00") {
             //     commit("SET_LOADING_STATE", "done");
