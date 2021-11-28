@@ -36,9 +36,7 @@ class TaxonomyEngineAPI {
         // Reports
         register_rest_route( 'taxonomyengine/v1', '/reports/review_end_histogram', [
             'methods' => 'GET',
-            'callback' => function() {
-                return "Hello";
-            },
+            'callback' => [$this, 'get_review_end_histogram'],
         ]);
     }
 
@@ -164,5 +162,10 @@ class TaxonomyEngineAPI {
         $post_id = $request->get_param('post_id');
         $result = $this->taxonomyengine_db->get_matched_tag_score($post_id);
         return $result;
+    }
+
+    function get_review_end_histogram($request) {
+        $review_end_histogram = $this->taxonomyengine_db->review_end_histogram();
+        return $review_end_histogram;
     }
 }

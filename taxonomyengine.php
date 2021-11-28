@@ -28,16 +28,6 @@ function taxonomy_engine_admin_init() {
 }
 add_action( 'init', 'taxonomy_engine_admin_init' );
 
-function taxonomy_engine_reports_init() {
-    if (!is_admin()) {
-        return;
-    }
-    $taxonomyengine_globals = [];
-    require_once(plugin_basename('includes/admin/taxonomyengine-reports.php' ) );
-    new TaxonomyEngineReports($taxonomyengine_globals);
-}
-add_action( 'init', 'taxonomy_engine_reports_init' );
-
 function taxonomy_engine_frontend_init() {
     require_once( plugin_dir_path( __FILE__ ) . 'includes/frontend/taxonomyengine-frontend-reviewer.php' );
     $taxonomyengine_frontend_reviewer = new TaxonomyEngineFrontendReviewer();

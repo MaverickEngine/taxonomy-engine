@@ -27,9 +27,4 @@ class TaxonomyEngineReports {
     function check_administrator_access(WP_REST_Request $request) {
         return current_user_can('administrator');
     }
-
-    function get_review_end_histogram($request) {
-        $review_end_histogram = $this->taxonomyengine_db->review_end_histogram();
-        return $review_end_histogram;
-    }
 }
