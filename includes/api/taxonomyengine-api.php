@@ -8,6 +8,7 @@ class TaxonomyEngineAPI {
     }
     
     function register_api_routes() { // TODO: Clean this up
+        // Taxonomies
         register_rest_route( 'taxonomyengine/v1', '/taxonomies/(?P<post_id>[0-9]+)', [
             'methods' => 'GET',
             'callback' => [$this, 'get_taxonomies'],
@@ -31,6 +32,13 @@ class TaxonomyEngineAPI {
             'methods' => ['POST', 'GET'],
             'callback' => [$this, 'post_score'],
             'permission_callback' => [$this, 'check_post_access']
+        ]);
+        // Reports
+        register_rest_route( 'taxonomyengine/v1', '/reports/review_end_histogram', [
+            'methods' => 'GET',
+            'callback' => function() {
+                return "Hello";
+            },
         ]);
     }
 

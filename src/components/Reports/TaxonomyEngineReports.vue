@@ -1,4 +1,5 @@
 <template lang="pug">
+div
     h2.page-header Taxonomy Engine Reports
     .card
         .card-header

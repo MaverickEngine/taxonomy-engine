@@ -17,6 +17,8 @@ const getters = {
 const actions = {
     async init({ commit, dispatch, state }) {
         try {
+            const review_end_histogram = await axios.get(`/wp-json/taxonomyengine/v1/reports/review_end_histogram`);
+            commit("SET_KEYVAL", { key: "review_end_histogram", value: review_end_histogram.data });
             // const review = (await axios.get(`/wp-json/taxonomyengine/v1/review/${taxonomyengine_post_id}`)).data;
             // if (review.review_end && review.review_end !== "0000-00-00 00:00:00") {
             //     commit("SET_LOADING_STATE", "done");

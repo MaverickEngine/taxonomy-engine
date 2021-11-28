@@ -9,8 +9,8 @@ class TaxonomyEngineAdmin {
         $taxonomyengine_settings = new TaxonomyEngineSettings($this->taxonomyengine_globals);
         require_once('taxonomyengine-reviewers.php' );
         $taxonomyengine_reviewers = new TaxonomyEngineReviewers($this->taxonomyengine_globals);
-        require_once('taxonomyengine-reports.php' );
-        $taxonomyengine_reports = new TaxonomyEngineReports($this->taxonomyengine_globals);
+        // require_once('taxonomyengine-reports.php' );
+        // $taxonomyengine_reports = new TaxonomyEngineReports($this->taxonomyengine_globals);
         require_once('taxonomyengine-taxonomy.php' );
         $taxonomyengine_taxonomy = new TaxonomyEngineTaxonomy($this->taxonomyengine_globals);
     }
