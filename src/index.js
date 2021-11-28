@@ -4,18 +4,22 @@ import TaxonomyEngineReports from './components/reports/TaxonomyEngineReports.vu
 import store from './store';
 
 (async function main() {
-    new Vue({
-        store,
-        el: "#TaxonomyEngineApp",
-        render (h) {
-            return h(ReviewerPostTaxonomy)
-        }
-    });
-    new Vue({
-        store,
-        el: "#TaxonomyEngineReports",
-        render (h) {
-            return h(TaxonomyEngineReports)
-        }
-    });
+    if (document.getElementById('TaxonomyEngineApp')) {
+        new Vue({
+            store,
+            el: "#TaxonomyEngineApp",
+            render (h) {
+                return h(ReviewerPostTaxonomy)
+            }
+        });
+    }
+    if (document.getElementById('TaxonomyEngineReports')) {
+        new Vue({
+            store,
+            el: "#TaxonomyEngineReports",
+            render (h) {
+                return h(TaxonomyEngineReports)
+            }
+        });
+    }
 })();
