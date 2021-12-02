@@ -1,12 +1,5 @@
-import Axios from 'axios';
 import moment from 'moment';
-
-const axios = Axios.create({
-    headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': _wpnonce
-    }
-});
+import {axios} from "../../libs/wp_axios";
 
 const state = {
     loading_state: "loading",

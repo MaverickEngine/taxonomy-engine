@@ -49,7 +49,7 @@ class TaxonomyEngineFrontendReviewer {
             ?>
             <script type="text/javascript">
                 var taxonomyengine_post_id = <?= $id; ?>;
-                var _wpnonce = "<?= $_wpnonce; ?>";
+                var taxonomyengine_wpnonce = "<?= $_wpnonce; ?>";
             </script>
             <?php
         }

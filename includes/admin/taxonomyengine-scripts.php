@@ -33,11 +33,12 @@ class TaxonomyEngineScripts {
      * Print scripts
      */
     public function print_scripts() {
-        $id = get_the_ID();
         $_wpnonce = wp_create_nonce( 'wp_rest' );
         ?>
         <script type="text/javascript">
-            var _wpnonce = "<?= $_wpnonce; ?>";
+            var taxonomyengine_wpnonce = "<?= $_wpnonce; ?>";
+            var taxonomyengine_reviewer_role = "<?= TAXONOMYENGINE_REVIEWER_ROLE; ?>";
+            var taxonomyengine_default_starting_weight = "<?= get_option('taxonomyengine_default_starting_weight', TAXONOMYENGINE_DEFAULT_STARTING_WEIGHT); ?>";
         </script>
         <?php
     }

@@ -7,6 +7,7 @@ class TaxonomyEngineSettings {
         "taxonomyengine_percentage_pass",
         "taxonomyengine_pass_score",
         "taxonomyengine_developer_mode",
+        "taxonomyengine_default_starting_weight",
     ];
 
     const TAXONOMYENGINE_ARTICLE_SELECTION_STRATEGIES = [
