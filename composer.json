@@ -1,8 +1,8 @@
 {
     "name": "taxonomyengine/taxonomyengine",
     "description": "Categorise your WordPress content with the assistance of machine learning and crowdsourcing",
+    "license": "MIT",
     "require": {
         "google/cloud-automl": "^1.4"
-    },
-    "license": "MIT"
+    }
 }

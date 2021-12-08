@@ -6,6 +6,9 @@ div
             h3 Stats
         .card-body
             p
+                strong Total number of reviews: 
+                | {{ reviews_total }}
+            p
                 strong Articles reviewed in the last week: 
                 | {{ reviews_last_week }}
             p
@@ -29,7 +32,8 @@ export default Vue.extend({
         ...mapState("Reports", [
             "review_end_histogram",
             "reviews_last_week",
-            "reviews_last_week_average"
+            "reviews_last_week_average",
+            "reviews_total"
         ])
     },
 })
