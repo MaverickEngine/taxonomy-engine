@@ -5,7 +5,7 @@
                 .taxonomyengine-arrow.down(v-if="visible_children")
                 .taxonomyengine-arrow(v-else)
             input(v-if="level > 0" type="checkbox" v-model="taxonomy.selected" @change="save_taxonomy" :disabled="selected_taxonomies.includes(taxonomy.id)" :id="'taxonomy-' + taxonomy.id")
-            label(:for="'taxonomy-' + taxonomy.id") {{taxonomy.name}}
+            label(:for="'taxonomy-' + taxonomy.id" v-bind:class="topLevel") {{taxonomy.name}}
             
             div.taxonomyengine-list-item(:id="`taxonomyengine_children_${taxonomy.id}`" v-for="child in taxonomy.children")
                 div(v-if="visible_children")
@@ -19,7 +19,11 @@ import { mapState } from 'vuex'
 export default Vue.extend({
     name: 'TaxonomyEngineTaxonomiesList',
     computed: {
-        ...mapState("Post", [ "selected_taxonomies" ])
+        ...mapState("Post", [ "selected_taxonomies" ]),
+        topLevel: function() {
+            console.log(this);
+            return (this.level === 0) ? "taxonomyengine-list-item-top-level" : "";
+        }
     },
     data() {
         // TODO: If a taxonomy has a child selected, its children should be visible
@@ -52,6 +56,22 @@ export default Vue.extend({
     padding: 0 ;
     margin: 0;
 
+    label {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10pt;
+        font-weight: normal;
+        line-height: 100%;
+        vertical-align: middle;
+    }
+
+    .taxonomyengine-list-item-top-level {
+        font-weight: bold;
+        font-size: 12pt;
+        margin-bottom: 15pt;
+        display: block;
+        text-decoration: underline;
+    }
+    
     .taxonomyengine-list-item {
         padding-left: 40px;
     }
