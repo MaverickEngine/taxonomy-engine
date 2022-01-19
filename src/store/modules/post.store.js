@@ -1,5 +1,17 @@
 import {axios} from "../../libs/wp_axios";
 
+const find_taxonomy_by_id = (taxonomies, id) => {
+    console.log(id, taxonomies);
+    const result = taxonomies.find(taxonomy => taxonomy.id === id);
+    if (!result) {
+        console.log(taxonomies);
+        if (taxonomies.children) {
+            return find_taxonomy_by_id(taxonomies.children, id);
+        }
+    }
+    return null;
+}
+
 const state = {
     loading_state: "loading",
     page_count: 0,
@@ -70,6 +82,25 @@ const actions = {
             console.error(error)
             commit("SET_KEYVAL", { key: "error", value: error });
         }
+    },
+
+    async select_taxonomy({ commit, state }, taxonomy) {
+        try {
+            console.log(taxonomy);
+            const taxonomies = state.taxonomies;
+            //Find taxonomy in nested object taxonomies
+            const found_taxonomy = find_taxonomy_by_id(taxonomies, taxonomy.id);
+            console.log(found_taxonomy);
+            //If taxonomy is not found, return
+            if (!found_taxonomy) {
+                return;
+            }
+            found_taxonomy.selected = true;
+            commit("SET_KEYVAL", { key: "taxonomies", value: taxonomies });
+        } catch (error) {
+            console.error(error)
+            commit("SET_KEYVAL", { key: "error", value: error });
+        }
     }
 }
 
@@ -79,7 +110,7 @@ const mutations = {
     },
     SET_LOADING_STATE(state, loading_state) {
         state.loading_state = loading_state;
-    },
+    }
 }
 
 export default {

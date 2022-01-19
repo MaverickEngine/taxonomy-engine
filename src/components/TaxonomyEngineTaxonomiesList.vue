@@ -21,7 +21,6 @@ export default Vue.extend({
     computed: {
         ...mapState("Post", [ "selected_taxonomies" ]),
         topLevel: function() {
-            console.log(this);
             return (this.level === 0) ? "taxonomyengine-list-item-top-level" : "";
         }
     },
@@ -43,8 +42,12 @@ export default Vue.extend({
         }
     },
     methods: {
-        save_taxonomy() {
-            this.$store.dispatch('Post/save_taxonomy', this.taxonomy)
+        async save_taxonomy() {
+            if (this.level >= 2) {
+                this.$parent.taxonomy.selected = true;
+                await this.$store.dispatch('Post/save_taxonomy', this.$parent.taxonomy);
+            }
+            await this.$store.dispatch('Post/save_taxonomy', this.taxonomy)
         },
     },
 })
@@ -71,7 +74,7 @@ export default Vue.extend({
         display: block;
         text-decoration: underline;
     }
-    
+
     .taxonomyengine-list-item {
         padding-left: 40px;
     }
