@@ -68,6 +68,11 @@ class TaxonomyEngineFrontendReviewer {
         if (!in_array(get_post_type(), get_option('taxonomyengine_post_types'))) {
             return false;
         }
+        // Only show if user has role TAXONOMYENGINE_REVIEWER_ROLE
+        $user = wp_get_current_user();
+        if (!in_array(TAXONOMYENGINE_REVIEWER_ROLE, $user->roles)) {
+            return false;
+        }
         return true;
     }
 
