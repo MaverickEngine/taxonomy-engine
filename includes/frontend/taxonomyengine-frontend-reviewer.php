@@ -5,12 +5,14 @@ class TaxonomyEngineFrontendReviewer {
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct($globals) {
         $this->developer_mode = get_option('taxonomyengine_developer_mode');
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
         add_action( 'wp_footer', array( $this, 'print_scripts' ) );
         add_filter( 'the_content', array( $this, 'append_reviewer_content') );
+        require_once(plugin_basename('taxonomyengine-navigation.php' ) );
+        $this->taxonomyengine_navigation = new TaxonomyEngineNavigation($taxonomyengine_globals);
     }
 
     /**
@@ -46,10 +48,12 @@ class TaxonomyEngineFrontendReviewer {
         if ($this->_show_content()) {
             $id = get_the_ID();
             $_wpnonce = wp_create_nonce( 'wp_rest' );
+            $next_article = $this->taxonomyengine_navigation->get_next_article();
             ?>
             <script type="text/javascript">
                 var taxonomyengine_post_id = <?= $id; ?>;
                 var taxonomyengine_wpnonce = "<?= $_wpnonce; ?>";
+                var taxonomyengine_next_article_url = "<?= get_permalink($next_article->ID); ?>";
             </script>
             <?php
         }

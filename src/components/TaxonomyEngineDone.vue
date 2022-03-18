@@ -2,7 +2,7 @@
 div
     h2 Article tagged
     p {{message}}
-    a(href="/wp-json/taxonomyengine/v1/next_article/redirect") Next Article
+    a(v-bind:href="next_url") Next Article
 </template>
 
 <script lang="ts">
@@ -34,8 +34,10 @@ const messages = [
 export default Vue.extend({
     name: 'TaxonomyEngineDone',
     data() {
+        let next_url = taxonomyengine_next_article_url || ''
         return {
-            message: messages[Math.floor(Math.random() * messages.length)]
+            message: messages[Math.floor(Math.random() * messages.length)],
+            next_url
         }
     }
 })
