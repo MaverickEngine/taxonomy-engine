@@ -101,26 +101,26 @@ class TaxonomyEngineSetup {
     }
 
     public static function check_setup_tasks() {
-        if ($_GET["taxonomyengine_predefined_terms"]) {
+        if (isset($_GET["taxonomyengine_predefined_terms"])) {
             self::create_predefined_terms();
         }
         $redirect = false;
-        if ($_GET["delete_terms"]) {
+        if (isset($_GET["delete_terms"])) {
             self::delete_terms();
         }
-        if ($_GET["taxonomyengine_set_post_type"]) {
+        if (isset($_GET["taxonomyengine_set_post_type"])) {
             update_option( "taxonomyengine_post_types", explode(",", $_GET["taxonomyengine_set_post_type"]) );
             $redirect = true;
         }
-        if ($_GET["taxonomyengine_set_article_strategy"]) {
+        if (isset($_GET["taxonomyengine_set_article_strategy"])) {
             update_option( "taxonomyengine_article_strategy", $_GET["taxonomyengine_set_article_strategy"] );
             $redirect = true;
         }
-        if ($_GET["taxonomyengine_set_percentage_pass"]) {
+        if (isset($_GET["taxonomyengine_set_percentage_pass"])) {
             update_option( "taxonomyengine_percentage_pass", $_GET["taxonomyengine_set_percentage_pass"] );
             $redirect = true;
         }
-        if ($_GET["taxonomyengine_set_pass_score"]) {
+        if (isset($_GET["taxonomyengine_set_pass_score"])) {
             update_option( "taxonomyengine_pass_score", $_GET["taxonomyengine_set_pass_score"] );
             $redirect = true;
         }
