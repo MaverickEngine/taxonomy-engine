@@ -61,3 +61,7 @@ npm install
 npm run build
 composer update --ignore-platform-reqs
 ```
+
+## The easy way to deploy
+
+The repository https://github.com/MaverickEngine/taxonomy-engine-deploy includes a script to build the latest version of TaxonomyEngine, and is also a usable Wordpress plugin.
