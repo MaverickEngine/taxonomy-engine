@@ -24,8 +24,8 @@ Each taxonomy item has the following keys:
 - name: The name of the taxonomy item
 - slug: A *unique* slug. Please ensure that you don't duplicate, else only one will be used.
 - description: A short description of the taxonomy item
-- question: A question to ask the reviewer when tagging
-- children: An array of child taxonomy items using the same structure
+- question: A question to ask the reviewer when tagging (this is currently not displayed, but may be used in the future)
+- children: An array of child taxonomy items using the same structure. It is not recommended to go further than three levels deep.
 - parent: The parent taxonomy item. If this is absent, it is a top level taxonomy item
 
 ```json
@@ -51,6 +51,10 @@ Each taxonomy item has the following keys:
         ]
     }
 ```
+
+### Taxonomy Order
+
+Wordpress orders taxonomies alphabetically, so unfortunately order is not maintained. However, we will always push "None" and "Other" to the end of the list.
 
 ## Installing from Source
 

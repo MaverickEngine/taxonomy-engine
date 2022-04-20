@@ -8,8 +8,10 @@
             label(:for="'taxonomy-' + taxonomy.id" v-bind:class="{topLevel, tooltip}") {{taxonomy.name}}
                 span.tooltiptext(v-if="taxonomy.description")
                     | {{taxonomy.description}}
-            
-            div.taxonomyengine-list-item(:id="`taxonomyengine_children_${taxonomy.id}`" v-for="child in taxonomy.children")
+            div.taxonomyengine-list-item(:id="`taxonomyengine_children_${taxonomy.id}`" v-for="child in taxonomy.children" v-if="!['None', 'Other'].includes(child.name)")
+                div(v-if="visible_children")
+                    TaxonomyEngineTaxonomiesList(:taxonomy="child" :level="level + 1")
+            div.taxonomyengine-list-item(:id="`taxonomyengine_children_${taxonomy.id}`" v-for="child in taxonomy.children" v-if="['None', 'Other'].includes(child.name)")
                 div(v-if="visible_children")
                     TaxonomyEngineTaxonomiesList(:taxonomy="child" :level="level + 1")
 </template>
@@ -30,8 +32,6 @@ export default Vue.extend({
         }
     },
     data() {
-        // TODO: If a taxonomy has a child selected, its children should be visible
-        // TODO: If a child is selected, its parent should be selected.
         return {
             visible_children: this.level < 1
         }
