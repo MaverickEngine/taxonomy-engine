@@ -5,7 +5,9 @@
                 .taxonomyengine-arrow.down(v-if="visible_children")
                 .taxonomyengine-arrow(v-else)
             input(v-if="level > 0" type="checkbox" v-model="taxonomy.selected" @change="save_taxonomy" :disabled="selected_taxonomies.includes(taxonomy.id)" :id="'taxonomy-' + taxonomy.id")
-            label(:for="'taxonomy-' + taxonomy.id" v-bind:class="topLevel") {{taxonomy.name}}
+            label(:for="'taxonomy-' + taxonomy.id" v-bind:class="{topLevel, tooltip}") {{taxonomy.name}}
+                span.tooltiptext(v-if="taxonomy.description")
+                    | {{taxonomy.description}}
             
             div.taxonomyengine-list-item(:id="`taxonomyengine_children_${taxonomy.id}`" v-for="child in taxonomy.children")
                 div(v-if="visible_children")
@@ -22,6 +24,9 @@ export default Vue.extend({
         ...mapState("Post", [ "selected_taxonomies" ]),
         topLevel: function() {
             return (this.level === 0) ? "taxonomyengine-list-item-top-level" : "";
+        },
+        tooltip: function() {
+            return (this.taxonomy.description) ? "tooltip" : "";
         }
     },
     data() {
@@ -102,6 +107,44 @@ export default Vue.extend({
     .taxonomyengine-arrow.down::before {
         transform: rotate(90deg);
         transition: transform .25s;
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 140px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        padding: 5px 5px;
+        border-radius: 6px;
+        
+        /* Position the tooltip text - see examples below! */
+        position: absolute;
+        z-index: 10;
+        top: 150%;
+        left: 50%;
+        margin-left: -40px;
+    }
+
+    /* Show the tooltip text when you mouse over the tooltip container */
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
+
+    .tooltip .tooltiptext::after {
+        content: " ";
+        position: absolute;
+        bottom: 100%;  /* At the top of the tooltip */
+        left: 20%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent black transparent;
     }
 }
 </style>
