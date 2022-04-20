@@ -104,6 +104,9 @@ class TaxonomyEngineSetup {
         if (isset($_GET["taxonomyengine_predefined_terms"])) {
             self::create_predefined_terms();
         }
+        if (isset($_GET["taxonomyengine_reset_terms"])) {
+            self::reset_terms();
+        }
         $redirect = false;
         if (isset($_GET["delete_terms"])) {
             self::delete_terms();
@@ -149,15 +152,17 @@ class TaxonomyEngineSetup {
             } else {
                 $parent_id = 0;
             }
-            wp_insert_term(
-                $item->name,
-                'taxonomyengine',
-                array(
-                    'description'=> $item->description,
-                    'slug' => $item->slug,
-                    'parent' => $parent_id
-                )
-            );
+            if (!term_exists($item->slug, "taxonomyengine")) {
+                wp_insert_term(
+                    $item->name,
+                    'taxonomyengine',
+                    array(
+                        'description'=> $item->description,
+                        'slug' => $item->slug,
+                        'parent' => $parent_id
+                    )
+                );
+            }
             if (isset($item->children)) {
                 self::_convert_taxonomy($item->children);
             }
@@ -172,6 +177,11 @@ class TaxonomyEngineSetup {
         if (!empty($existing_terms)) {
             return;
         }
+        $fname = plugin_dir_path( dirname( __FILE__ ) ).'/data/default_taxonomy.json';
+        self::_convert_taxonomy(json_decode(file_get_contents($fname)));
+    }
+
+    private static function reset_terms() {
         $fname = plugin_dir_path( dirname( __FILE__ ) ).'/data/default_taxonomy.json';
         self::_convert_taxonomy(json_decode(file_get_contents($fname)));
     }
