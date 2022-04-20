@@ -16,6 +16,42 @@ This means that you could require two interns to agree on a tag to accept an art
 
 As the system learns your article tagging based on your specific content, it will start suggesting tags. We track the accuracy of the machine learning predictions, and once it passes a defined point, we can autotag the historic corpus.
 
+## Setting your own taxonomy
+
+The default taxonomy is defined in /data/default_taxonomy.json. 
+
+Each taxonomy item has the following keys:
+- name: The name of the taxonomy item
+- slug: A *unique* slug. Please ensure that you don't duplicate, else only one will be used.
+- description: A short description of the taxonomy item
+- question: A question to ask the reviewer when tagging
+- children: An array of child taxonomy items using the same structure
+- parent: The parent taxonomy item. If this is absent, it is a top level taxonomy item
+
+```json
+[
+    {
+        "name": "Story purpose",
+        "slug": "story-purpose",
+        "description": "The reason that we decided to make this content",
+        "question": "Why do you think DM decided to tell this story?",
+        "children": [
+            {
+                "name": "Agenda-setting",
+                "slug": "story-purpose-agenda-setting",
+                "description": "to raise a new issue or bring a new perspective to an existing issue",
+                "parent": "story-purpose"
+            },
+            {
+                "name": "Analytical",
+                "slug": "story-purpose-analytical",
+                "description": "to break down a current issue and focus on the fundamentals with a view to carrying out further analysis",
+                "parent": "story-purpose"
+            }
+        ]
+    }
+```
+
 ## Installing from Source
 
 ### Installing dependencies
