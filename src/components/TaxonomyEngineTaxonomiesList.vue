@@ -5,8 +5,8 @@
                 .taxonomyengine-arrow.down(v-if="visible_children")
                 .taxonomyengine-arrow(v-else)
             input(v-if="level > 0" type="checkbox" v-model="taxonomy.selected" @change="save_taxonomy" :disabled="selected_taxonomies.includes(taxonomy.id)" :id="'taxonomy-' + taxonomy.id")
-            label(:for="'taxonomy-' + taxonomy.id" v-bind:class="{topLevel, tooltip}") {{taxonomy.name}}
-                span.tooltiptext(v-if="taxonomy.description")
+            label(:for="'taxonomy-' + taxonomy.id" v-bind:class="[topLevel, tooltipObj]") {{taxonomy.name}}
+                span.taxonomyengine-tooltiptext(v-if="taxonomy.description")
                     | {{taxonomy.description}}
             div.taxonomyengine-list-item(:id="`taxonomyengine_children_${taxonomy.id}`" v-for="child in taxonomy.children" v-if="!['None', 'Other'].includes(child.name)")
                 div(v-if="visible_children")
@@ -27,13 +27,15 @@ export default Vue.extend({
         topLevel: function() {
             return (this.level === 0) ? "taxonomyengine-list-item-top-level" : "";
         },
-        tooltip: function() {
-            return (this.taxonomy.description) ? "tooltip" : "";
+        tooltipObj: function() {
+            return {
+                "taxonomyengine-tooltip" : (this.taxonomy.description)
+            }
         }
     },
     data() {
         return {
-            visible_children: this.level < 1
+            visible_children: this.level < 1,
         }
     },
     props: {
@@ -109,12 +111,12 @@ export default Vue.extend({
         transition: transform .25s;
     }
 
-    .tooltip {
+    .taxonomyengine-tooltip {
         position: relative;
         display: inline-block;
     }
 
-    .tooltip .tooltiptext {
+    .taxonomyengine-tooltip .taxonomyengine-tooltiptext {
         visibility: hidden;
         width: 140px;
         background-color: black;
@@ -132,11 +134,11 @@ export default Vue.extend({
     }
 
     /* Show the tooltip text when you mouse over the tooltip container */
-    .tooltip:hover .tooltiptext {
+    .taxonomyengine-tooltip:hover .taxonomyengine-tooltiptext {
         visibility: visible;
     }
 
-    .tooltip .tooltiptext::after {
+    .taxonomyengine-tooltip .taxonomyengine-tooltiptext::after {
         content: " ";
         position: absolute;
         bottom: 100%;  /* At the top of the tooltip */
