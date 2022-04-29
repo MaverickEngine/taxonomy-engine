@@ -10,6 +10,20 @@ const find_taxonomy_by_id = (taxonomies, id) => {
     return null;
 }
 
+function check_selected(taxonomy) {
+    if (taxonomy.selected) {
+        return true;
+    }
+    if (taxonomy.children) {
+        for (let child of taxonomy.children) {
+            if (check_selected(child)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 const state = {
     loading_state: "loading",
     page_count: 0,
@@ -60,6 +74,11 @@ const actions = {
     },
 
     next_page({ dispatch, state }) {
+        if (globalThis.taxonomyengine_require_answer) {
+            if (!check_selected(state.current_taxonomy)) {
+                return;
+            }
+        }
         if (state.current_page < state.page_count) {
             dispatch("set_page", state.current_page + 1);
         }
@@ -72,6 +91,11 @@ const actions = {
     },
     
     async done({ commit, state }) {
+        if (globalThis.taxonomyengine_require_answer) {
+            if (!check_selected(state.current_taxonomy)) {
+                return;
+            }
+        }
         await axios.post(`/wp-json/taxonomyengine/v1/taxonomies/${taxonomyengine_post_id}/done`);
         commit("SET_LOADING_STATE", "done");
     },
@@ -79,6 +103,7 @@ const actions = {
     async save_taxonomy({ commit, state }, taxonomy) {
         try {
             await axios.post(`/wp-json/taxonomyengine/v1/taxonomies/${taxonomyengine_post_id}`, {taxonomy});
+            
         } catch (error) {
             console.error(error)
             commit("SET_KEYVAL", { key: "error", value: error });

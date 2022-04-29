@@ -2,15 +2,30 @@
 #taxonomyengine_navigation
     div.nav_arrow(v-if="current_page > 1" @click="prev_page") 
         div.arrow.up
-    div.nav_arrow(v-if="current_page < page_count" @click="next_page")
+    div.nav_arrow(v-if="current_page < page_count" @click="next_page" v-bind:class="{taxonomyengine_disable_arrow: !next_enabled()}")
         div.arrow.down
-    div.done(@click="done" v-if="current_page == page_count")
+    div.done(@click="done" v-if="current_page == page_count" v-bind:class="{taxonomyengine_disable_arrow: !next_enabled()}")
         div.done_text Done
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
+
+function check_selected(taxonomy) {
+    if (taxonomy.selected) {
+        return true;
+    }
+    if (taxonomy.children) {
+        for (let child of taxonomy.children) {
+            if (check_selected(child)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export default Vue.extend({
     name: "TaxonomyEngineNavigation",
     props: {
@@ -29,7 +44,19 @@ export default Vue.extend({
             'next_page',
             'done'
         ])
-    }
+    },
+    computed: {
+        ...mapState("Post", [ "current_taxonomy" ]),
+        
+    },
+    data() {
+        return {
+            next_enabled: function() {
+                if (!globalThis.taxonomyengine_require_answer) return true;
+                return check_selected(this.current_taxonomy);
+            }
+        }
+    },
 })
 </script>
 
@@ -47,6 +74,7 @@ export default Vue.extend({
         padding-left: 15px;
         border-radius: 8%;
         margin: 5px;
+        cursor: pointer;
     }
 
     .arrow {
@@ -85,6 +113,10 @@ export default Vue.extend({
         text-align: center;
         color: white;
         cursor: pointer;
+    }
+
+    .taxonomyengine_disable_arrow {
+        background-color: #96ce96;
     }
 }
 </style>
