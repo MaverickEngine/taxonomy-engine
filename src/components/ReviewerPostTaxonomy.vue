@@ -2,6 +2,7 @@
 div.taxonomyengine
     h3 TaxonomyEngine
     Error(v-if="loading_state === 'error'" :error="error")
+    TaxonomyEngineInstructions(v-if="loading_state === 'loaded' && (taxonomyengine_instruction_text)" :taxonomyengine_instruction_text="taxonomyengine_instruction_text")
     ProgressBar.progressbar(v-if="loading_state === 'loaded'" size="large" text-position="bottom" :val="current_page / page_count * 100" :text="`${current_page} / ${page_count}`" text-fg-color="black" color="green")
     TaxonomyEngineTaxonomies(v-if="loading_state === 'loaded'" :current_page="current_page" :page_count="page_count")
     TaxonomyEngineNavigation(v-if="loading_state === 'loaded'" :current_page="current_page" :page_count="page_count")
@@ -17,6 +18,7 @@ import TaxonomyEngineNavigation from './TaxonomyEngineNavigation.vue'
 import TaxonomyEngineTaxonomies from './TaxonomyEngineTaxonomies.vue'
 import TaxonomyEngineDone from './TaxonomyEngineDone.vue'
 import TaxonomyEnginePassed from './TaxonomyEnginePassed.vue'
+import TaxonomyEngineInstructions from './TaxonomyEngineInstructions.vue'
 import Error from './Error.vue'
 
 export default Vue.extend({
@@ -27,7 +29,8 @@ export default Vue.extend({
         TaxonomyEngineTaxonomies,
         TaxonomyEngineDone,
         Error,
-        TaxonomyEnginePassed
+        TaxonomyEnginePassed,
+        TaxonomyEngineInstructions
     },
     computed: {
         ...mapState("Post", [ 
@@ -40,7 +43,8 @@ export default Vue.extend({
     },
     data() {
         return {
-            taxonomiesLoaded: false
+            taxonomiesLoaded: false,
+            taxonomyengine_instruction_text: globalThis.taxonomyengine_instruction_text || null
         }
     },
     async mounted() {
@@ -52,4 +56,8 @@ export default Vue.extend({
 </script>
 
 <style lang="less" scoped>
+.taxonomyengine {
+    position: relative;
+    display: block;
+}
 </style>
