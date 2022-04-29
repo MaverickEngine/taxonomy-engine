@@ -32,9 +32,7 @@ export default Vue.extend({
 
 <style lang="less" scoped>
 #taxonomy-engine-taxonomies {
-    .page_container {
-        height: 70vh;
-        overflow: scroll;
-    }
+    flex: 1;
+    overflow: auto;
 }
 </style>

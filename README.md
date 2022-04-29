@@ -69,3 +69,27 @@ composer update --ignore-platform-reqs
 ## The easy way to deploy
 
 The repository https://github.com/MaverickEngine/taxonomy-engine-deploy includes a script to build the latest version of TaxonomyEngine, and is also a usable Wordpress plugin.
+
+# Changelog
+
+### v0.1.0
+
+Basic functionality
+
+### v0.2.0
+
+- New taxonomy
+- Description shown as tooltip
+- "None" and "Other" always pushed to end of list
+- "Reset" taxonomy
+
+### v0.2.1
+
+- Namespace CSS to avoid conflicts
+
+### v0.2.2
+
+- Customisable general instructions field
+- Dismissable instructions
+- Settings option to enforce the selection of a field before moving on to the next
+- Better position of "Next" arrow

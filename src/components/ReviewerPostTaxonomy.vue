@@ -58,6 +58,10 @@ export default Vue.extend({
 <style lang="less" scoped>
 .taxonomyengine {
     position: relative;
-    display: block;
+    display: flex;
+    flex-flow: column nowrap;
+    height: 80vh;
+    overflow: hidden;
+
 }
 </style>
