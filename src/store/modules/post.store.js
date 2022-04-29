@@ -1,10 +1,8 @@
 import {axios} from "../../libs/wp_axios";
 
 const find_taxonomy_by_id = (taxonomies, id) => {
-    console.log(id, taxonomies);
     const result = taxonomies.find(taxonomy => taxonomy.id === id);
     if (!result) {
-        console.log(taxonomies);
         if (taxonomies.children) {
             return find_taxonomy_by_id(taxonomies.children, id);
         }
@@ -21,6 +19,7 @@ const state = {
     review: {},
     error: false,
     selected_taxonomies: [],
+    instructions_visible: false,
 }
 
 const getters = {
@@ -45,6 +44,8 @@ const actions = {
             commit("SET_KEYVAL", { key: "review", value: review });
             commit("SET_KEYVAL", { key: "page_count", value: Object.keys(taxonomies).length });
             dispatch("set_page", 1);
+            const instructions_visible = localStorage.getItem("taxonomyengine_instructions_visible") === "true";
+            commit("SET_KEYVAL", { key: "instructions_visible", value: instructions_visible });
             commit("SET_LOADING_STATE", "loaded")
         } catch (error) {
             console.error("Got an error", error.toString())
@@ -86,11 +87,9 @@ const actions = {
 
     async select_taxonomy({ commit, state }, taxonomy) {
         try {
-            console.log(taxonomy);
             const taxonomies = state.taxonomies;
             //Find taxonomy in nested object taxonomies
             const found_taxonomy = find_taxonomy_by_id(taxonomies, taxonomy.id);
-            console.log(found_taxonomy);
             //If taxonomy is not found, return
             if (!found_taxonomy) {
                 return;
@@ -101,6 +100,14 @@ const actions = {
             console.error(error)
             commit("SET_KEYVAL", { key: "error", value: error });
         }
+    },
+    hide_instructions({ commit }) {
+        commit("SET_KEYVAL", { key: "instructions_visible", value: false });
+        localStorage.setItem("taxonomyengine_instructions_visible", false);
+    },
+    show_instructions({ commit }) {
+        commit("SET_KEYVAL", { key: "instructions_visible", value: true });
+        localStorage.setItem("taxonomyengine_instructions_visible", true);
     }
 }
 
