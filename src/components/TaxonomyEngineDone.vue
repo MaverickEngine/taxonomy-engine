@@ -34,7 +34,7 @@ const messages = [
 export default Vue.extend({
     name: 'TaxonomyEngineDone',
     data() {
-        let next_url = taxonomyengine_next_article_url || ''
+        let next_url = globalThis.taxonomyengine_next_article_url || ''
         return {
             message: messages[Math.floor(Math.random() * messages.length)],
             next_url
