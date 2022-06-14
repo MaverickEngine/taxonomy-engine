@@ -93,3 +93,7 @@ Basic functionality
 - Dismissable instructions
 - Settings option to enforce the selection of a field before moving on to the next
 - Better position of "Next" arrow
+
+### v0.2.3
+
+- Fix bug where DB versions weren't being compared correctly
