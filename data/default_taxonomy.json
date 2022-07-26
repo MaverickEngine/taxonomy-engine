@@ -226,76 +226,82 @@
         ]
     },
     {
-        "name": "Story production",
-        "slug": "story-production",
-        "description": "The content being produced",
-        "question": "What is the main means of production?",
+        "name": "Article elements",
+        "slug": "article-elements",
+        "description": "Which elements appear in the article?",
+        "question": "Which elements appear in the article? Select all that apply",
         "children": [
             {
                 "name": "Text",
-                "parent": "story-production",
+                "parent": "article-elements",
                 "description": "",
-                "slug": "story-production-text"
+                "slug": "article-elements-text"
             },
             {
                 "name": "Video",
-                "parent": "story-production",
+                "parent": "article-elements",
                 "description": "",
-                "slug": "story-production-video"
+                "slug": "article-elements-video"
             },
             {
                 "name": "Photos",
-                "parent": "story-production",
+                "parent": "article-elements",
                 "description": "",
-                "slug": "story-production-photos"
+                "slug": "article-elements-photos"
             },
             {
                 "name": "Audio",
-                "parent": "story-production",
+                "parent": "article-elements",
                 "description": "",
-                "slug": "story-production-audio"
+                "slug": "article-elements-audio"
             },
             {
                 "name": "Document",
-                "parent": "story-production",
+                "parent": "article-elements",
                 "description": "",
-                "slug": "story-production-document"
+                "slug": "article-elements-document"
             },
             {
                 "name": "Graphs/charts",
-                "parent": "story-production",
+                "parent": "article-elements",
                 "description": "",
-                "slug": "story-production-graphs-charts"
+                "slug": "article-elements-graphs-charts"
             },
             {
                 "name": "Surveys/questionnaire",
-                "parent": "story-production",
+                "parent": "article-elements",
                 "description": "",
-                "slug": "story-production-surveys-questionnaire"
+                "slug": "article-elements-surveys-questionnaire"
             },
             {
                 "name": "Interactive/timeline",
-                "parent": "story-production",
+                "parent": "article-elements",
                 "description": "",
-                "slug": "story-production-interactive-timeline"
+                "slug": "article-elements-interactive-timeline"
             },
             {
                 "name": "Map",
-                "parent": "story-production",
+                "parent": "article-elements",
                 "description": "",
-                "slug": "story-production-map"
+                "slug": "article-elements-map"
             },
             {
                 "name": "Other",
-                "parent": "story-production",
+                "parent": "article-elements",
                 "description": "",
-                "slug": "story-production-other"
+                "slug": "article-elements-other"
             },
             {
                 "name": "None",
-                "parent": "story-production",
+                "parent": "article-elements",
                 "description": "",
-                "slug": "story-production-none"
+                "slug": "article-elements-none"
+            },
+            {
+                "name": "Social media embeds",
+                "parent": "article-elements",
+                "description": "Twitter, Facebook, Instagram, etc.",
+                "slug": "article-elements-social-media-embeds"
             }
         ]
     },
@@ -372,10 +378,10 @@
                 "slug": "story-topic-government-and-politics"
             },
             {
-                "name": "News",
+                "name": "Media",
                 "parent": "story-topic",
                 "description": "",
-                "slug": "story-topic-news"
+                "slug": "story-topic-media"
             },
             {
                 "name": "Personal Finance",
@@ -436,6 +442,12 @@
                 "parent": "story-topic",
                 "description": "",
                 "slug": "story-topic-travel"
+            },
+            {
+                "name": "Marketing",
+                "parent": "story-topic",
+                "description": "",
+                "slug": "story-topic-marketing"
             }
         ]
     },
