@@ -1,9 +1,9 @@
 <template lang="pug">
 #taxonomyengine_navigation
     div.nav_arrow(v-if="current_page > 1" @click="prev_page") 
-        div.arrow.up
+        div.arrow.left
     div.nav_arrow(v-if="current_page < page_count" @click="next_page" v-bind:class="{taxonomyengine_disable_arrow: !next_enabled()}")
-        div.arrow.down
+        div.arrow.right
     div.done(@click="done" v-if="current_page == page_count" v-bind:class="{taxonomyengine_disable_arrow: !next_enabled()}")
         div.done_text Done
 </template>
