@@ -51,11 +51,11 @@ class TaxonomyEngineFrontendReviewer {
             $next_article = $this->taxonomyengine_navigation->get_next_article();
             ?>
             <script type="text/javascript">
-                var taxonomyengine_post_id = <?= $id; ?>;
-                var taxonomyengine_wpnonce = "<?= $_wpnonce; ?>";
-                var taxonomyengine_next_article_url = "<?= get_permalink($next_article->ID); ?>";
-                var taxonomyengine_require_answer = <?= get_option('taxonomyengine_require_answer') ?: "0"; ?>;
-                var taxonomyengine_instruction_text = "<?= htmlentities(get_option('taxonomyengine_instruction_text'), ENT_COMPAT, "UTF-8"); ?>";
+                var taxonomyengine_post_id = <?php echo esc_js($id); ?>;
+                var taxonomyengine_wpnonce = "<?php echo esc_js($_wpnonce); ?>";
+                var taxonomyengine_next_article_url = "<?php echo esc_js(get_permalink($next_article->ID)); ?>";
+                var taxonomyengine_require_answer = <?php echo esc_js(get_option('taxonomyengine_require_answer') ?: "0"); ?>;
+                var taxonomyengine_instruction_text = "<?php echo esc_js(get_option('taxonomyengine_instruction_text'), ENT_COMPAT, "UTF-8"); ?>";
             </script>
             <?php
         }
