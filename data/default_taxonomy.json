@@ -318,10 +318,22 @@
                 "slug": "story-topic-automotive"
             },
             {
-                "name": "Careers and Education",
+                "name": "Business",
                 "parent": "story-topic",
                 "description": "",
-                "slug": "story-topic-careers-and-education"
+                "slug": "story-topic-business"
+            },
+            {
+                "name": "Conflict",
+                "parent": "story-topic",
+                "description": "",
+                "slug": "story-topic-conflict"
+            },
+            {
+                "name": "Education",
+                "parent": "story-topic",
+                "description": "",
+                "slug": "story-topic-education"
             },
             {
                 "name": "Economy",
@@ -348,10 +360,10 @@
                 "slug": "story-topic-food-and-drink"
             },
             {
-                "name": "Health and Fitness",
+                "name": "Health",
                 "parent": "story-topic",
                 "description": "",
-                "slug": "story-topic-health-and-fitness"
+                "slug": "story-topic-health"
             },
             {
                 "name": "Hobbies and Interests",
@@ -466,6 +478,12 @@
                 "parent": "story-topic",
                 "description": "",
                 "slug": "story-topic-media"
+            },
+            {
+                "name": "Wellness",
+                "parent": "story-topic",
+                "description": "",
+                "slug": "story-topic-wellness"
             }
         ]
     },
