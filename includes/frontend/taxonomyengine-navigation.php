@@ -1,6 +1,11 @@
 <?php
 
 class TaxonomyEngineNavigation {
+
+    private $taxonomyengine_globals;
+    private $post_types;
+    private $taxonomyengine_db;
+    
     function __construct($taxonomyengine_globals) {
         $this->taxonomyengine_globals = &$taxonomyengine_globals;
         // add_action('rest_api_init', [$this, 'register_api_routes' ]);

@@ -1,6 +1,10 @@
 <?php
 
 class TaxonomyEngineDB {
+    private $taxonomy_tablename;
+    private $reviews_tablename;
+    private $passed_posts_tablename;
+    
     public function __construct() {
         global $wpdb;
         $this->taxonomy_tablename = $wpdb->prefix . "taxonomyengine_reviews_taxonomy";

@@ -2,6 +2,10 @@
 // require_once("../automl/taxonomyengine-automl.php");
 
 class TaxonomyEngineAPI {
+
+    private $taxonomyengine_globals;
+    private $taxonomyengine_db;
+
     function __construct($taxonomyengine_globals) {
         $this->taxonomyengine_globals = &$taxonomyengine_globals;
         add_action('rest_api_init', [$this, 'register_api_routes' ]);

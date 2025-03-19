@@ -13,6 +13,11 @@ class TaxonomyEngineAutoML {
         "taxonomyengine_google_credentials"
     ];
 
+    private $taxonomyengine_globals;
+    private $client;
+    private $formattedParent;
+    private $dataset;
+
     public function __construct($taxonomyengine_globals) {
         $this->taxonomyengine_globals = &$taxonomyengine_globals;
         add_action('admin_menu', [ $this, 'settings_page' ]);
