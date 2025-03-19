@@ -2,6 +2,9 @@
 
 class TaxonomyEngineFrontendReviewer {
 
+    private $developer_mode;
+    private $taxonomyengine_navigation;
+
     /**
      * Constructor
      */
